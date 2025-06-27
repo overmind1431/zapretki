@@ -45,18 +45,24 @@
       font-size: 1.2em;
       color: var(--primary-color);
     }
+    /* Общие таблицы */
     table {
       width: 100%;
       border-collapse: collapse;
       margin-bottom: 24px;
     }
-    th, td {
-      border: 1px solid #ccc;
-      padding: 8px;
-      text-align: center;
-      font-size: 0.95em;
+    /* Уменьшенные таблицы омоглифов */
+    .sidebar table {
+      width: auto;
+      margin-bottom: 16px;
     }
-    th {
+    .sidebar th, .sidebar td {
+      border: 1px solid #ccc;
+      padding: 4px;
+      text-align: center;
+      font-size: 0.75em;
+    }
+    .sidebar thead th {
       background: #e6f0ff;
       font-weight: 600;
     }
@@ -202,7 +208,7 @@
     };
     const labels = {
       'churka.txt': 'чурка', 'daun.txt': 'даун', 'hohol.txt': 'хохол', 'jid.txt': 'жид',
-      'negr.txt': 'негр', 'niga.txt': 'нига', 'niger.txt': 'нигер', 'pedik.txt': 'педик',
+      'negr.txt': 'nегр', 'niga.txt': 'нига', 'niger.txt': 'нигер', 'pedik.txt': 'педик',
       'pidor.txt': 'пидор', 'pidrila.txt': 'пидрила'
     };
 
@@ -250,7 +256,6 @@
     fileSelectUpper.addEventListener('change', renderList);
     fileSelectLower.addEventListener('change', renderList);
 
-    // Init
     populateFileSelects();
     fileSelectLower.parentElement.style.display = 'none';
     renderList();
