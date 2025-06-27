@@ -12,6 +12,7 @@
       --text-color: #333333;
       --border-radius: 8px;
       --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      --non-russian-opacity: 0.4;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -71,6 +72,7 @@
       font-size: 0.95em;
     }
     .column li:last-child { border-bottom: none; }
+    .non-russian { opacity: var(--non-russian-opacity); }
   </style>
 </head>
 <body>
@@ -117,15 +119,10 @@
         files.forEach(fname => {
           const id = `${mode}_${fname}`;
           const cb = document.createElement('input');
-          cb.type = 'checkbox';
-          cb.id = id;
-          cb.dataset.mode = mode;
-          cb.dataset.file = fname;
-          cb.checked = true;
+          cb.type = 'checkbox'; cb.id = id; cb.dataset.mode = mode; cb.dataset.file = fname; cb.checked = true;
           const label = document.createElement('label');
-          const text = document.createTextNode(labels[fname] || fname);
           label.appendChild(cb);
-          label.appendChild(text);
+          label.appendChild(document.createTextNode(' ' + (labels[fname] || fname)));
           fieldset.appendChild(label);
 
           cb.addEventListener('change', () => {
@@ -136,19 +133,26 @@
       });
     }
 
+    function wrapChars(line) {
+      return Array.from(line).map(ch => {
+        const span = document.createElement('span');
+        span.textContent = ch;
+        // Русские буквы и пробел остаются
+        if (!/[А-Яа-яЁё\s]/.test(ch)) {
+          span.classList.add('non-russian');
+        }
+        return span;
+      });
+    }
+
     function createColumn(mode, fname, lines) {
-      const col = document.createElement('div');
-      col.className = 'column';
-      col.dataset.mode = mode;
-      col.dataset.file = fname;
-      const title = document.createElement('h2');
-      title.textContent = labels[fname] || fname;
-      col.appendChild(title);
+      const col = document.createElement('div'); col.className = 'column'; col.dataset.mode = mode; col.dataset.file = fname;
+      const title = document.createElement('h2'); title.textContent = labels[fname] || fname; col.appendChild(title);
       const ul = document.createElement('ul');
       lines.forEach(line => {
         if (!line.trim()) return;
         const li = document.createElement('li');
-        li.textContent = line;
+        wrapChars(line).forEach(span => li.appendChild(span));
         ul.appendChild(li);
       });
       col.appendChild(ul);
@@ -159,25 +163,22 @@
       Object.entries(sources).forEach(([mode, {dir, files}]) => {
         files.forEach(fname => {
           fetch(`${dir}/${fname}`)
-            .then(response => response.ok ? response.text() : Promise.reject(response.statusText))
-            .then(text => createColumn(mode, fname, text.split(/\r?\n/)))
+            .then(resp => resp.ok ? resp.text() : Promise.reject(resp.statusText))
+            .then(txt => createColumn(mode, fname, txt.split(/\r?\n/)))
             .catch(err => createColumn(mode, fname, [`Ошибка загрузки: ${err}`]));
         });
       });
     }
 
     function applyMode(mode) {
-      fsLower.classList.toggle('hidden', mode !== 'lower');
-      fsUpper.classList.toggle('hidden', mode !== 'upper');
-      document.querySelectorAll('.column').forEach(col => {
-        const sel = document.getElementById(`${mode}_${col.dataset.file}`);
-        col.classList.toggle('hidden', col.dataset.mode !== mode || (sel && !sel.checked));
+      fsLower.hidden = mode !== 'lower'; fsUpper.hidden = mode !== 'upper';
+      document.querySelectorAll('.column').forEach(c => {
+        const sel = document.getElementById(`${mode}_${c.dataset.file}`);
+        c.classList.toggle('hidden', c.dataset.mode !== mode || (sel && !sel.checked));
       });
     }
 
-    // Инициализация
-    initFileSelectors();
-    loadAll();
+    initFileSelectors(); loadAll();
     document.getElementById('toggleLower').addEventListener('change', () => applyMode('lower'));
     document.getElementById('toggleUpper').addEventListener('change', () => applyMode('upper'));
     window.addEventListener('load', () => applyMode('upper'));
