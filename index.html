@@ -47,13 +47,40 @@
       flex-direction: column;
       gap: 12px;
     }
-    .sidebar .explanation { font-size: 0.85em; text-align: center; }
-    .sidebar .tables { display: flex; justify-content: space-between; gap: 8px; overflow-x: auto; }
-    .sidebar table { border-collapse: collapse; width: 48%; font-size: 0.75em; }
-    .sidebar th, .sidebar td { border: 1px solid #444; padding: 4px 6px; text-align: center; }
-    .sidebar th { background: #333; font-weight: 600; }
-    .content { flex: 1; display: flex; flex-direction: column; }
-    .generated-title { font-size: 1.2em; font-weight: 600; margin-bottom: 16px; }
+    .sidebar .explanation {
+      font-size: 0.85em;
+      text-align: center;
+    }
+    .sidebar .tables {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      overflow-x: auto;
+    }
+    .sidebar table {
+      border-collapse: collapse;
+      width: 48%;
+      font-size: 0.75em;
+    }
+    .sidebar th, .sidebar td {
+      border: 1px solid #444;
+      padding: 4px 6px;
+      text-align: center;
+    }
+    .sidebar th {
+      background: #333;
+      font-weight: 600;
+    }
+    .content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .generated-title {
+      font-size: 1.2em;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
     .controls {
       background: var(--card-bg);
       box-shadow: var(--shadow);
@@ -68,15 +95,19 @@
     }
     .controls div { display: flex; flex-direction: column; }
     label { margin-bottom: 8px; font-weight: 600; }
-    select { padding: 8px; border: 1px solid #555; border-radius: var(--border-radius); background: #2a2a2a; color: var(--text-color); }
+    select {
+      padding: 8px;
+      border: 1px solid #555;
+      border-radius: var(--border-radius);
+      background: #2a2a2a;
+      color: var(--text-color);
+    }
     .list-container {
       background: var(--card-bg);
       box-shadow: var(--shadow);
       border-radius: var(--border-radius);
       overflow: hidden;
       flex: 1;
-      display: flex;
-      flex-direction: column;
     }
     .list-container h2 {
       background: var(--primary-color);
@@ -91,7 +122,6 @@
       margin: 0;
       max-height: 60vh;
       overflow-y: auto;
-      flex: 1;
     }
     .list-container li {
       padding: 4px 0;
@@ -124,14 +154,23 @@
       cursor: pointer;
       font-size: 1em;
     }
-    .speech-panel button .icon { font-size: 1.2em; }
+    .speech-panel button .icon {
+      font-size: 1.2em;
+    }
     .donation {
       margin-top: 16px;
       border-top: 1px solid #444;
       padding-top: 16px;
     }
-    .donation h3 { font-size: 1em; margin-bottom: 12px; font-weight: 600; }
-    .donation ul { list-style: none; padding: 0; }
+    .donation h3 {
+      font-size: 1em;
+      margin-bottom: 12px;
+      font-weight: 600;
+    }
+    .donation ul {
+      list-style: none;
+      padding: 0;
+    }
     .donation li {
       display: flex;
       align-items: center;
@@ -139,20 +178,21 @@
       font-size: 0.95em;
     }
     .donation .icon-crypto {
-      width: 20px;
-      height: 20px;
-      object-fit: contain;
+      display: inline-block;
+      width: 20px; /* Установите желаемую ширину иконок */
+      height: 20px; /* Установите желаемую высоту иконок */
       margin-right: 8px;
+      vertical-align: middle; /* Выравнивание иконок по центру текста */
+    }
+    .donation .icon-crypto svg {
+      width: 100%;
+      height: 100%;
+      fill: currentColor; /* Заливка SVG текущим цветом текста */
     }
     .donation a {
       color: var(--primary-color);
       text-decoration: none;
       word-break: break-all;
-    }
-    .qr {
-      width: 120px;
-      margin-top: 8px;
-      border-radius: 4px;
     }
   </style>
 </head>
@@ -160,6 +200,7 @@
   <h1>Генератор невидимых, скрытых запреток</h1>
   <div class="notice">Как это было сделано? С помощью машинного зрения и синтезатора голоса мы перебрали миллион символов из UTF8, чтобы найти нечитаемые синтезатором речи омоглифы, которые идеально похожи на обычные русские буквы</div>
   <div class="main">
+
     <aside class="sidebar">
       <div class="explanation">таблица с нечитаемыми омоглифами</div>
       <div class="tables">
@@ -193,46 +234,103 @@
             <tr><td>Г</td><td>Γ</td></tr>
             <tr><td>Е</td><td>Ε</td></tr>
             <tr><td>З</td><td>Ꝫ</td></tr>
-            <tr><td>И</td><td>ⲅ</td></tr>
+            <tr><td>И</td><td>𐐥</td></tr>
             <tr><td>К</td><td>Κ</td></tr>
             <tr><td>М</td><td>Μ</td></tr>
             <tr><td>Н</td><td>Η</td></tr>
             <tr><td>О</td><td>Ο</td></tr>
+            <tr><td>П</td><td>Π</td></tr>
             <tr><td>Р</td><td>Ρ</td></tr>
-            <tr><td>С</td><td>Ϲ</td></tr>
+            <tr><td>С</td><td>Ꮯ</td></tr>
             <tr><td>Т</td><td>Τ</td></tr>
+            <tr><td>У</td><td>Ꭹ</td></tr>
+            <tr><td>Ф</td><td>Փ</td></tr>
             <tr><td>Х</td><td>Χ</td></tr>
-            <tr><td>Я</td><td>Я</td></tr>
+            <tr><td>Ч</td><td>Ⴗ</td></tr>
+            <tr><td>Ш</td><td>Ш</td></tr>
+            <tr><td>Ь</td><td>Ꮟ</td></tr>
+            <tr><td>Э</td><td>℈</td></tr>
           </tbody>
         </table>
       </div>
     </aside>
-    <div class="content">
-      <div class="generated-title">Омоглифы для генерации</div>
+
+    <section class="content">
+      <div class="generated-title">Готовые сгенерированные банворды</div>
       <div class="controls">
-        <div>
-          <label for="word-list">Выберите категорию слов</label>
-          <select id="word-list">
-            <option value="banned">Запрещённые</option>
-            <option value="custom">Пользовательские</option>
-          </select>
-        </div>
+        <div><label for="registerSelect">Регистр</label><select id="registerSelect"></select></div>
+        <div><label for="fileSelect">Файл</label><select id="fileSelect"></select></div>
       </div>
       <div class="list-container">
-        <h2>Результат</h2>
-        <ul id="results">
-          <!-- Слова появятся здесь -->
-        </ul>
-        <div class="donation">
-          <h3>Поддержать проект</h3>
-          <ul>
-            <li><img src="https://cryptologos.cc/logos/bitcoin-btc-logo.png?v=030" alt="BTC" class="icon-crypto"> <a href="https://donate.example.com/btc" target="_blank">bc1qexamplebtcaddress</a></li>
-            <li><img src="https://cryptologos.cc/logos/ethereum-eth-logo.png?v=030" alt="ETH" class="icon-crypto"> <a href="https://donate.example.com/eth" target="_blank">0xExampleEthAddress</a></li>
-          </ul>
-          <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=bc1qexamplebtcaddress" alt="BTC QR" class="qr">
-        </div>
+        <h2 id="listTitle">Список слов</h2>
+        <ul id="list"></ul>
       </div>
-    </div>
+    </section>
+
+    <aside class="speech-panel">
+      <label for="speechText">Текст для синтеза</label>
+      <textarea id="speechText" placeholder="Введите текст..."></textarea>
+      <button id="speakBtn"><span class="icon">▶️</span>Прослушать</button>
+      <div class="donation">
+        <h3>Поддержать меня</h3>
+        <ul>
+          <li>
+            <span class="icon-crypto">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M16 0C7.163 0 0 7.163 0 16s7.163 16 16 16 16-7.163 16-16S24.837 0 16 0zm-1.875 25.109V19.49H11.5v5.619h-2.125V6.89h6.5c2.75 0 4.875 1.75 4.875 4.5s-2.125 4.5-4.875 4.5h-4.625v9.219h-2.125zm0-11.369h4.625c1.625 0 2.75-1 2.75-2.5s-1.125-2.5-2.75-2.5h-4.625v5z"/></svg>
+            </span>Bitcoin: bc1qj3gvs0qjqgx637r4ch00neukrh3n98m0ljf8j3
+          </li>
+          <li>
+            <span class="icon-crypto">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M16 0C7.163 0 0 7.163 0 16s7.163 16 16 16 16-7.163 16-16S24.837 0 16 0zm0 18.006c-.496 0-.898-.403-.898-.898V9.814c0-.496.403-.898.898-.898.496 0 .898.403.898.898v7.294c0 .496-.403.898-.898.898zm0 5.617c-.496 0-.898-.403-.898-.898v-2.316c0-.496.403-.898.898-.898.496 0 .898.403.898.898v2.316c0 .496-.403.898-.898.898z"/></svg>
+            </span>Ethereum: 0x1B5310cad9F99f1FAbA21512f54eB83538356A54
+          </li>
+          <li>
+            <span class="icon-crypto">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M16 0C7.163 0 0 7.163 0 16s7.163 16 16 16 16-7.163 16-16S24.837 0 16 0zm-3.621 21.054c-1.391.242-2.366-.549-2.203-1.637l.635-4.101c.174-1.121 1.15-1.895 2.525-2.138l2.969-.504c.328-.056.525-.332.525-.668v-.658c0-.623-.424-.959-.97-.959-.629 0-1.118.39-1.315.936-.109.289-.39.463-.699.463-.223 0-.412-.087-.514-.261-.096-.174-.15-.261-.15-.436 0-1.295 1.575-2.22 3.129-2.22 1.637 0 2.658.823 2.658 2.138v2.417c0 .623.424.959.97.959.629 0 1.118-.39 1.315-.936.109-.289.39-.463.699-.463.223 0 .412.087.514.261.096.174.15.261.15.436 0 1.295-1.575 2.22-3.129 2.22l-2.97.504c-.328.056-.525.332-.525.668v.658c0 .623.424.959.97.959.629 0 1.118-.39 1.315-.936.109-.289.39-.463.699-.463.223 0 .412.087.514.261.096.174.15.261.15.436 0 1.295-1.575 2.22-3.129 2.22zM16 32c-8.837 0-16-7.163-16-16S7.163 0 16 0s16 7.163 16 16-7.163 16-16 16z"/></svg>
+            </span>USDT (TRC-20): TTxGSWYegcrCioF7aGjfoYFr6yMzACcURd
+          </li>
+          <li>
+            <span class="icon-crypto">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M16 0C7.163 0 0 7.163 0 16s7.163 16 16 16 16-7.163 16-16S24.837 0 16 0zm-1.875 25.109V19.49H11.5v5.619h-2.125V6.89h6.5c2.75 0 4.875 1.75 4.875 4.5s-2.125 4.5-4.875 4.5h-4.625v9.219h-2.125zm0-11.369h4.625c1.625 0 2.75-1 2.75-2.5s-1.125-2.5-2.75-2.5h-4.625v5z"/></svg>
+            </span>Litecoin: ltc1q6vrw4ekcqj66qdz9t7pnue4q05l47pzhqz5wu6
+          </li>
+          <li>
+            <span class="icon-crypto">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M16 0C7.163 0 0 7.163 0 16s7.163 16 16 16 16-7.163 16-16S24.837 0 16 0zm0 21.054c-1.391.242-2.366-.549-2.203-1.637l.635-4.101c.174-1.121 1.15-1.895 2.525-2.138l2.969-.504c.328-.056.525-.332.525-.668v-.658c0-.623-.424-.959-.97-.959-.629 0-1.118.39-1.315.936-.109.289-.39.463-.699.463-.223 0-.412-.087-.514-.261-.096-.174-.15-.261-.15-.436 0-1.295 1.575-2.22 3.129-2.22 1.637 0 2.658.823 2.658 2.138v2.417c0 .623.424.959.97.959.629 0 1.118-.39 1.315-.936.109-.289.39-.463.699-.463.223 0 .412.087.514.261.096.174.15.261.15.436 0 1.295-1.575 2.22-3.129 2.22l-2.97.504c-.328.056-.525.332-.525.668v.658c0 .623.424.959.97.959.629 0 1.118-.39 1.315-.936.109-.289.39-.463.699-.463.223 0 .412.087.514.261.096.174.15.261.15.436 0 1.295-1.575 2.22-3.129 2.22zM16 32c-8.837 0-16-7.163-16-16S7.163 0 16 0s16 7.163 16 16-7.163 16-16 16z"/></svg>
+            </span>Solana: 4nUzv4rUnHMTTALiuHyVNbF4PGF5VRdY5734nQng7sLy
+          </li>
+          <li>
+            <span class="icon-crypto">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M16 0C7.163 0 0 7.163 0 16s7.163 16 16 16 16-7.163 16-16S24.837 0 16 0zm-1.875 25.109V19.49H11.5v5.619h-2.125V6.89h6.5c2.75 0 4.875 1.75 4.875 4.5s-2.125 4.5-4.875 4.5h-4.625v9.219h-2.125zm0-11.369h4.625c1.625 0 2.75-1 2.75-2.5s-1.125-2.5-2.75-2.5h-4.625v5z"/></svg>
+            </span>Ton: UQA2JCkZQbm8B6qYp3w1w12hxwQQKzoLBenR2UR-oHbOowOe
+          </li>
+          <li><span class="icon-crypto">🔗</span><a href="https://www.donationalerts.com/r/overminded" target="_blank">donationalerts.com/r/overminded</a></li>
+        </ul>
+      </div>
+    </aside>
+
   </div>
+  <script>
+    // генерация списков
+    const sources = { upper: { dir: 'UPPERCASE', files: ['churka.txt','daun.txt','hohol.txt','jid.txt','negr.txt','niga.txt','niger.txt','pedik.txt','pidor.txt','pidrila.txt'] }, lower: { dir: 'lowercase', files: ['churka.txt','daun.txt','hohol.txt','jid.txt','negr.txt','niga.txt','niger.txt','pedik.txt','pidor.txt'] } };
+    const labels = { 'churka.txt':'чурка','daun.txt':'даун','hohol.txt':'хохол','jid.txt':'жид','negr.txt':'негр','niga.txt':'нига','niger.txt':'нигер','pedik.txt':'педик','pidor.txt':'пидор','pidrila.txt':'пидрила'};
+    const regSelect = document.getElementById('registerSelect'), fileSelect = document.getElementById('fileSelect'), list = document.getElementById('list'), listTitle = document.getElementById('listTitle');
+    function wrapChars(text) { return Array.from(text).map(ch => { const span = document.createElement('span'); span.textContent = ch; if (!/[А-Яа-яЁё\s]/.test(ch)) span.classList.add('non-russian'); return span; }); }
+    function populateRegisterSelect() { regSelect.innerHTML=''; [['ВЕРХНИЙ','upper'],['нижний','lower']].forEach(([t,v])=>regSelect.add(new Option(t,v))); regSelect.value='upper'; }
+    function populateFileSelect(mode) { fileSelect.innerHTML=''; sources[mode].files.forEach(f=>fileSelect.add(new Option(labels[f]||f,f))); fileSelect.selectedIndex=0; }
+    function renderList() { const mode=regSelect.value, file=fileSelect.value; list.innerHTML=''; listTitle.textContent=labels[file]||file; fetch(`${sources[mode].dir}/${file}`).then(r=>r.ok?r.text():Promise.reject(r.statusText)).then(t=>t.split(/\r?\n/).forEach(l=>{ if(l.trim()){ const li=document.createElement('li'); wrapChars(l).forEach(s=>li.appendChild(s)); list.appendChild(li);} }))
+      .catch(e=>list.innerHTML=`<li>Ошибка загрузки: ${e}</li>`);
+    }
+    regSelect.addEventListener('change',()=>{ populateFileSelect(regSelect.value); renderList(); });
+    fileSelect.addEventListener('change', renderList);
+    populateRegisterSelect(); populateFileSelect('upper'); renderList();
+    // синтез речи
+    const speakBtn = document.getElementById('speakBtn'), speechText = document.getElementById('speechText');
+    speakBtn.addEventListener('click', () => {
+      const utter = new SpeechSynthesisUtterance(speechText.value);
+      utter.lang = 'ru-RU';
+      speechSynthesis.speak(utter);
+    });
+  </script>
 </body>
 </html>
