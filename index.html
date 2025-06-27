@@ -6,12 +6,12 @@
   <title>Просмотр слов и таблица омоглифов</title>
   <style>
     :root {
-      --bg-color: #f0f2f5;
-      --card-bg: #ffffff;
-      --primary-color: #0061f2;
-      --text-color: #333333;
+      --bg-color: #121212;
+      --card-bg: #1e1e1e;
+      --primary-color: #bb86fc;
+      --text-color: #ffffff;
       --border-radius: 8px;
-      --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      --shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
       --non-russian-opacity: 0.4;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -41,6 +41,7 @@
     .sidebar .explanation {
       font-size: 0.85em;
       text-align: center;
+      color: var(--text-color);
     }
     .sidebar .tables {
       display: flex;
@@ -53,12 +54,13 @@
       font-size: 0.75em;
     }
     .sidebar th, .sidebar td {
-      border: 1px solid #ccc;
+      border: 1px solid #444;
       padding: 4px 6px;
       text-align: center;
+      color: var(--text-color);
     }
     .sidebar th {
-      background: #e6f0ff;
+      background: #333;
       font-weight: 600;
     }
     .content {
@@ -77,11 +79,13 @@
       justify-content: space-between;
     }
     .controls div { display: flex; flex-direction: column; }
-    label { margin-bottom: 8px; font-weight: 600; }
+    label { margin-bottom: 8px; font-weight: 600; color: var(--text-color); }
     select {
       padding: 8px;
-      border: 1px solid #ccc;
+      border: 1px solid #555;
       border-radius: var(--border-radius);
+      background: #2a2a2a;
+      color: var(--text-color);
     }
     .list-container {
       background: var(--card-bg);
@@ -105,7 +109,7 @@
     }
     .list-container li {
       padding: 4px 0;
-      border-bottom: 1px solid #e0e0e0;
+      border-bottom: 1px solid #333;
       word-break: break-all;
       font-size: 0.95em;
     }
@@ -116,10 +120,12 @@
 <body>
   <div class="main">
     <aside class="sidebar">
-      <div class="explanation">таблица с нечитаемыми омоглифами, слева обычная буква, справа омоглиф</div>
+      <div class="explanation">таблица с нечитаемыми омоглифами, слева нормальная буква, справа нечитаемый омоглиф</div>
       <div class="tables">
         <table>
-          <thead><tr><th colspan="2">нижний регистр</th></tr></thead>
+          <thead>
+            <tr><th>нормальная буква</th><th>нечитаемый омоглиф</th></tr>
+          </thead>
           <tbody>
             <tr><td>б</td><td>б</td></tr>
             <tr><td>в</td><td>ʙ</td></tr>
@@ -141,7 +147,9 @@
           </tbody>
         </table>
         <table>
-          <thead><tr><th colspan="2">ВЕРХНИЙ регистр</th></tr></thead>
+          <thead>
+            <tr><th>нормальная буква</th><th>нечитаемый омоглиф</th></tr>
+          </thead>
           <tbody>
             <tr><td>А</td><td>Α</td></tr>
             <tr><td>В</td><td>Β</td></tr>
@@ -258,10 +266,8 @@
       populateFileSelect(regSelect.value);
       renderList();
     });
-
     fileSelect.addEventListener('change', renderList);
 
-    // инициализация
     populateRegisterSelect();
     populateFileSelect('upper');
     renderList();
