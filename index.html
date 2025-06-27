@@ -3,17 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Просмотр слов</title>
+  <title>Просмотр слов по регистру</title>
   <style>
     body {
       margin: 0;
       padding: 0;
       font-family: sans-serif;
     }
+    .controls {
+      padding: 10px;
+      background: #f5f5f5;
+      border-bottom: 1px solid #ccc;
+    }
     .columns {
       display: flex;
       flex-wrap: wrap;
-      height: 100vh;
+      height: calc(100vh - 50px);
     }
     .column {
       flex: 1 1 200px;
@@ -39,71 +44,118 @@
       border-bottom: 1px solid #eee;
       word-break: break-all;
     }
+    .hidden {
+      display: none !important;
+    }
   </style>
 </head>
 <body>
 
-<div class="columns" id="container">
-  <!-- Скрипт подгрузит сюда колонки -->
-</div>
+  <div class="controls">
+    <label>
+      <input type="radio" name="caseToggle" value="lower" id="toggleLower">
+      нижний регистр
+    </label>
+    <label style="margin-left:20px;">
+      <input type="radio" name="caseToggle" value="upper" id="toggleUpper" checked>
+      ВЕРХНИЙ РЕГИСТР
+    </label>
+  </div>
 
-<script>
-  // Папки и их файлы
-  const sources = [
-    { dir: 'UPPERCASE', files: [
-        'churka.txt','daun.txt','hohol.txt','jid.txt',
-        'negr.txt','niga.txt','niger.txt','pedik.txt',
-        'pidor.txt','pidrila.txt'
-      ]
-    },
-    { dir: 'lowercase', files: [
-        'churka.txt','daun.txt','hohol.txt','jid.txt',
-        'negr.txt','niga.txt','niger.txt','pedik.txt',
-        'pidor.txt'
-      ]
+  <div class="columns" id="container">
+    <!-- Колонки будут добавлены скриптом -->
+  </div>
+
+  <script>
+    const sources = [
+      {
+        dir: 'lowercase',
+        mode: 'lower',
+        files: [
+          'churka.txt','daun.txt','hohol.txt','jid.txt',
+          'negr.txt','niga.txt','niger.txt','pedik.txt',
+          'pidor.txt'
+        ]
+      },
+      {
+        dir: 'UPPERCASE',
+        mode: 'upper',
+        files: [
+          'churka.txt','daun.txt','hohol.txt','jid.txt',
+          'negr.txt','niga.txt','niger.txt','pedik.txt',
+          'pidor.txt','pidrila.txt'
+        ]
+      }
+    ];
+
+    const container = document.getElementById('container');
+
+    function createColumn(path, lines, mode) {
+      const col = document.createElement('div');
+      col.className = 'column';
+      col.dataset.mode = mode;  // "upper" или "lower"
+
+      const title = document.createElement('h2');
+      title.textContent = path;
+      col.appendChild(title);
+
+      const ul = document.createElement('ul');
+      lines.forEach(l => {
+        if (!l.trim()) return;
+        const li = document.createElement('li');
+        li.textContent = l;
+        ul.appendChild(li);
+      });
+      col.appendChild(ul);
+
+      container.appendChild(col);
     }
-  ];
 
-  const container = document.getElementById('container');
-
-  function createColumn(path, lines) {
-    const col = document.createElement('div');
-    col.className = 'column';
-
-    const title = document.createElement('h2');
-    title.textContent = path;
-    col.appendChild(title);
-
-    const ul = document.createElement('ul');
-    lines.forEach(l => {
-      if (!l.trim()) return;
-      const li = document.createElement('li');
-      li.textContent = l;
-      ul.appendChild(li);
+    // загрузка файлов
+    sources.forEach(src => {
+      src.files.forEach(fname => {
+        const relPath = `${src.dir}/${fname}`;
+        fetch(relPath)
+          .then(resp => {
+            if (!resp.ok) throw new Error(resp.statusText);
+            return resp.text();
+          })
+          .then(txt => {
+            const lines = txt.split(/\r?\n/);
+            createColumn(relPath, lines, src.mode);
+          })
+          .catch(err => {
+            createColumn(relPath, [`Ошибка загрузки: ${err.message}`], src.mode);
+          });
+      });
     });
-    col.appendChild(ul);
-    container.appendChild(col);
-  }
 
-  sources.forEach(src => {
-    src.files.forEach(fname => {
-      const relPath = `${src.dir}/${fname}`;
-      fetch(relPath)
-        .then(resp => {
-          if (!resp.ok) throw new Error(`${resp.status}`);
-          return resp.text();
-        })
-        .then(txt => {
-          const lines = txt.split(/\r?\n/);
-          createColumn(relPath, lines);
-        })
-        .catch(err => {
-          console.error(`Ошибка ${relPath}:`, err);
-          createColumn(relPath, [`Ошибка загрузки: ${err.message}`]);
-        });
+    // фильтр по переключателю
+    function applyFilter(mode) {
+      document.querySelectorAll('.column').forEach(col => {
+        col.classList.toggle('hidden', col.dataset.mode !== mode);
+      });
+    }
+
+    // слушатели для радио-кнопок
+    document.getElementById('toggleLower').addEventListener('change', () => {
+      if (document.getElementById('toggleLower').checked) {
+        applyFilter('lower');
+      }
     });
-  });
-</script>
+    document.getElementById('toggleUpper').addEventListener('change', () => {
+      if (document.getElementById('toggleUpper').checked) {
+        applyFilter('upper');
+      }
+    });
+
+    // после динамической вставки колонок: ждать, пока все элементы есть в DOM
+    // и применить фильтр по умолчанию
+    window.addEventListener('load', () => {
+      // небольшой таймаут, чтобы дать время fetch’ам
+      setTimeout(() => applyFilter('upper'), 500);
+    });
+  </script>
 
 </body>
 </html>
