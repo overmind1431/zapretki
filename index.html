@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Просмотр слов по регистру и файлу</title>
+  <title>Просмотр слов и таблица омоглифов</title>
   <style>
     :root {
       --bg-color: #f0f2f5;
@@ -22,13 +22,50 @@
       line-height: 1.4;
       padding: 16px;
     }
+    .main {
+      display: flex;
+      gap: 24px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .sidebar {
+      flex: 0 0 40%;
+      background: var(--card-bg);
+      box-shadow: var(--shadow);
+      border-radius: var(--border-radius);
+      padding: 16px;
+      overflow-y: auto;
+      max-height: 80vh;
+    }
+    .content {
+      flex: 1;
+    }
+    h2 {
+      margin-bottom: 8px;
+      font-size: 1.2em;
+      color: var(--primary-color);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 24px;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: center;
+      font-size: 0.95em;
+    }
+    th {
+      background: #e6f0ff;
+      font-weight: 600;
+    }
     .controls {
       background: var(--card-bg);
       box-shadow: var(--shadow);
       border-radius: var(--border-radius);
       padding: 16px;
-      max-width: 600px;
-      margin: 0 auto 24px;
+      margin-bottom: 24px;
       display: flex;
       flex-wrap: wrap;
       gap: 16px;
@@ -48,8 +85,6 @@
       font-family: 'Segoe UI', sans-serif;
     }
     .list-container {
-      max-width: 600px;
-      margin: 0 auto;
       background: var(--card-bg);
       box-shadow: var(--shadow);
       border-radius: var(--border-radius);
@@ -80,27 +115,84 @@
   </style>
 </head>
 <body>
-  <div class="controls">
-    <div>
-      <label for="registerSelect">Регистр</label>
-      <select id="registerSelect">
-        <option value="upper">ВЕРХНИЙ</option>
-        <option value="lower">нижний</option>
-      </select>
-    </div>
-    <div>
-      <label for="fileSelectUpper">Файл (ВЕРХНИЙ)</label>
-      <select id="fileSelectUpper"></select>
-    </div>
-    <div>
-      <label for="fileSelectLower">Файл (нижний)</label>
-      <select id="fileSelectLower"></select>
-    </div>
-  </div>
+  <div class="main">
+    <aside class="sidebar">
+      <h2>Омоглифы (ВЕРХНИЙ регистр)</h2>
+      <table>
+        <thead><tr><th>Буква</th><th>Омоглиф</th></tr></thead>
+        <tbody>
+          <tr><td>А</td><td>Α</td></tr>
+          <tr><td>В</td><td>Β</td></tr>
+          <tr><td>Г</td><td>Γ</td></tr>
+          <tr><td>Е</td><td>Ε</td></tr>
+          <tr><td>З</td><td>Ꝫ</td></tr>
+          <tr><td>И</td><td>𐐥</td></tr>
+          <tr><td>К</td><td>Κ</td></tr>
+          <tr><td>М</td><td>Μ</td></tr>
+          <tr><td>Н</td><td>Η</td></tr>
+          <tr><td>О</td><td>Ο</td></tr>
+          <tr><td>П</td><td>Π</td></tr>
+          <tr><td>Р</td><td>Ρ</td></tr>
+          <tr><td>С</td><td>Ꮯ</td></tr>
+          <tr><td>Т</td><td>Τ</td></tr>
+          <tr><td>У</td><td>Ꭹ</td></tr>
+          <tr><td>Ф</td><td>Փ</td></tr>
+          <tr><td>Х</td><td>Χ</td></tr>
+          <tr><td>Ч</td><td>Ⴗ</td></tr>
+          <tr><td>Ш</td><td>Ш</td></tr>
+          <tr><td>Ь</td><td>Ꮟ</td></tr>
+          <tr><td>Э</td><td>℈</td></tr>
+        </tbody>
+      </table>
+      <h2>Омоглифы (нижний регистр)</h2>
+      <table>
+        <thead><tr><th>Буква</th><th>Омоглиф</th></tr></thead>
+        <tbody>
+          <tr><td>б</td><td>б</td></tr>
+          <tr><td>в</td><td>ʙ</td></tr>
+          <tr><td>г</td><td>ᴦ</td></tr>
+          <tr><td>е</td><td>℮</td></tr>
+          <tr><td>з</td><td>ɜ</td></tr>
+          <tr><td>и</td><td>ͷ</td></tr>
+          <tr><td>к</td><td>ĸ</td></tr>
+          <tr><td>л</td><td>ᴫ</td></tr>
+          <tr><td>м</td><td>ᴍ</td></tr>
+          <tr><td>н</td><td>ʜ</td></tr>
+          <tr><td>о</td><td>ο</td></tr>
+          <tr><td>п</td><td>ᴨ</td></tr>
+          <tr><td>р</td><td>ⲣ</td></tr>
+          <tr><td>с</td><td>ϲ</td></tr>
+          <tr><td>т</td><td>ᴛ</td></tr>
+          <tr><td>ф</td><td>ɸ</td></tr>
+          <tr><td>я</td><td>ᴙ</td></tr>
+        </tbody>
+      </table>
+    </aside>
 
-  <div class="list-container" id="listContainer">
-    <h2 id="listTitle">Список слов</h2>
-    <ul id="list"></ul>
+    <section class="content">
+      <div class="controls">
+        <div>
+          <label for="registerSelect">Регистр</label>
+          <select id="registerSelect">
+            <option value="upper">ВЕРХНИЙ</option>
+            <option value="lower">нижний</option>
+          </select>
+        </div>
+        <div>
+          <label for="fileSelectUpper">Файл (ВЕРХНИЙ)</label>
+          <select id="fileSelectUpper"></select>
+        </div>
+        <div>
+          <label for="fileSelectLower">Файл (нижний)</label>
+          <select id="fileSelectLower"></select>
+        </div>
+      </div>
+
+      <div class="list-container" id="listContainer">
+        <h2 id="listTitle">Список слов</h2>
+        <ul id="list"></ul>
+      </div>
+    </section>
   </div>
 
   <script>
@@ -119,17 +211,10 @@
     const fileSelectLower = document.getElementById('fileSelectLower');
     const list = document.getElementById('list');
     const listTitle = document.getElementById('listTitle');
-    const listContainer = document.getElementById('listContainer');
 
     function populateFileSelects() {
-      sources.upper.files.forEach(f => {
-        const opt = new Option(labels[f] || f, f);
-        fileSelectUpper.add(opt);
-      });
-      sources.lower.files.forEach(f => {
-        const opt = new Option(labels[f] || f, f);
-        fileSelectLower.add(opt);
-      });
+      sources.upper.files.forEach(f => fileSelectUpper.add(new Option(labels[f]||f, f)));
+      sources.lower.files.forEach(f => fileSelectLower.add(new Option(labels[f]||f, f)));
     }
 
     function wrapChars(text) {
@@ -146,25 +231,20 @@
       const selFile = mode === 'upper' ? fileSelectUpper.value : fileSelectLower.value;
       const dir = sources[mode].dir;
       list.innerHTML = '';
-      listTitle.textContent = labels[selFile] || selFile;
+      listTitle.textContent = labels[selFile]||selFile;
       fetch(`${dir}/${selFile}`)
         .then(r => r.ok ? r.text() : Promise.reject(r.statusText))
-        .then(text => {
-          text.split(/\r?\n/).forEach(line => {
-            if (!line.trim()) return;
-            const li = document.createElement('li');
-            wrapChars(line).forEach(span => li.appendChild(span));
-            list.appendChild(li);
-          });
-        })
-        .catch(err => {
-          list.innerHTML = `<li>Ошибка загрузки: ${err}</li>`;
-        });
+        .then(text => text.split(/\r?\n/).forEach(line => {
+          if (!line.trim()) return;
+          const li = document.createElement('li'); wrapChars(line).forEach(s=>li.appendChild(s));
+          list.appendChild(li);
+        }))
+        .catch(e => list.innerHTML = `<li>Ошибка загрузки: ${e}</li>`);
     }
 
     regSelect.addEventListener('change', () => {
-      fileSelectUpper.parentElement.style.display = regSelect.value === 'upper' ? 'block' : 'none';
-      fileSelectLower.parentElement.style.display = regSelect.value === 'lower' ? 'block' : 'none';
+      fileSelectUpper.parentElement.style.display = regSelect.value==='upper'?'block':'none';
+      fileSelectLower.parentElement.style.display = regSelect.value==='lower'?'block':'none';
       renderList();
     });
     fileSelectUpper.addEventListener('change', renderList);
@@ -172,7 +252,6 @@
 
     // Init
     populateFileSelects();
-    // Hide lower select initially
     fileSelectLower.parentElement.style.display = 'none';
     renderList();
   </script>
