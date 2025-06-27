@@ -29,42 +29,31 @@
       margin: 0 auto;
     }
     .sidebar {
-      flex: 0 0 40%;
+      flex: 0 0 300px;
       background: var(--card-bg);
       box-shadow: var(--shadow);
       border-radius: var(--border-radius);
       padding: 16px;
-      overflow-y: auto;
-      max-height: 80vh;
+      display: flex;
+      gap: 16px;
+      justify-content: space-between;
     }
-    .content {
-      flex: 1;
-    }
-    h2 {
-      margin-bottom: 8px;
-      font-size: 1.2em;
-      color: var(--primary-color);
-    }
-    /* Общие таблицы */
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-bottom: 24px;
-    }
-    /* Уменьшенные таблицы омоглифов */
     .sidebar table {
+      border-collapse: collapse;
       width: auto;
-      margin-bottom: 16px;
+      font-size: 0.75em;
     }
     .sidebar th, .sidebar td {
       border: 1px solid #ccc;
-      padding: 4px;
+      padding: 4px 6px;
       text-align: center;
-      font-size: 0.75em;
     }
-    .sidebar thead th {
+    .sidebar th {
       background: #e6f0ff;
       font-weight: 600;
+    }
+    .content {
+      flex: 1;
     }
     .controls {
       background: var(--card-bg);
@@ -78,10 +67,7 @@
       align-items: center;
       justify-content: space-between;
     }
-    .controls div {
-      display: flex;
-      flex-direction: column;
-    }
+    .controls div { display: flex; flex-direction: column; }
     label { margin-bottom: 8px; font-weight: 600; }
     select {
       padding: 8px;
@@ -123,9 +109,30 @@
 <body>
   <div class="main">
     <aside class="sidebar">
-      <h2>Омоглифы (ВЕРХНИЙ регистр)</h2>
       <table>
-        <thead><tr><th>Буква</th><th>Омоглиф</th></tr></thead>
+        <thead><tr><th colspan="2">омоглифы<br>нижний регистр</th></tr></thead>
+        <tbody>
+          <tr><td>б</td><td>б</td></tr>
+          <tr><td>в</td><td>ʙ</td></tr>
+          <tr><td>г</td><td>ᴦ</td></tr>
+          <tr><td>е</td><td>℮</td></tr>
+          <tr><td>з</td><td>ɜ</td></tr>
+          <tr><td>и</td><td>ͷ</td></tr>
+          <tr><td>к</td><td>ĸ</td></tr>
+          <tr><td>л</td><td>ᴫ</td></tr>
+          <tr><td>м</td><td>ᴍ</td></tr>
+          <tr><td>н</td><td>ʜ</td></tr>
+          <tr><td>о</td><td>ο</td></tr>
+          <tr><td>п</td><td>ᴨ</td></tr>
+          <tr><td>р</td><td>ⲣ</td></tr>
+          <tr><td>с</td><td>ϲ</td></tr>
+          <tr><td>т</td><td>ᴛ</td></tr>
+          <tr><td>ф</td><td>ɸ</td></tr>
+          <tr><td>я</td><td>ᴙ</td></tr>
+        </tbody>
+      </table>
+      <table>
+        <thead><tr><th colspan="2">омоглифы<br>ВЕРХНИЙ регистр</th></tr></thead>
         <tbody>
           <tr><td>А</td><td>Α</td></tr>
           <tr><td>В</td><td>Β</td></tr>
@@ -148,29 +155,6 @@
           <tr><td>Ш</td><td>Ш</td></tr>
           <tr><td>Ь</td><td>Ꮟ</td></tr>
           <tr><td>Э</td><td>℈</td></tr>
-        </tbody>
-      </table>
-      <h2>Омоглифы (нижний регистр)</h2>
-      <table>
-        <thead><tr><th>Буква</th><th>Омоглиф</th></tr></thead>
-        <tbody>
-          <tr><td>б</td><td>б</td></tr>
-          <tr><td>в</td><td>ʙ</td></tr>
-          <tr><td>г</td><td>ᴦ</td></tr>
-          <tr><td>е</td><td>℮</td></tr>
-          <tr><td>з</td><td>ɜ</td></tr>
-          <tr><td>и</td><td>ͷ</td></tr>
-          <tr><td>к</td><td>ĸ</td></tr>
-          <tr><td>л</td><td>ᴫ</td></tr>
-          <tr><td>м</td><td>ᴍ</td></tr>
-          <tr><td>н</td><td>ʜ</td></tr>
-          <tr><td>о</td><td>ο</td></tr>
-          <tr><td>п</td><td>ᴨ</td></tr>
-          <tr><td>р</td><td>ⲣ</td></tr>
-          <tr><td>с</td><td>ϲ</td></tr>
-          <tr><td>т</td><td>ᴛ</td></tr>
-          <tr><td>ф</td><td>ɸ</td></tr>
-          <tr><td>я</td><td>ᴙ</td></tr>
         </tbody>
       </table>
     </aside>
@@ -208,7 +192,7 @@
     };
     const labels = {
       'churka.txt': 'чурка', 'daun.txt': 'даун', 'hohol.txt': 'хохол', 'jid.txt': 'жид',
-      'negr.txt': 'nегр', 'niga.txt': 'нига', 'niger.txt': 'нигер', 'pedik.txt': 'педик',
+      'negr.txt': 'негр', 'niga.txt': 'нига', 'niger.txt': 'нигер', 'pedik.txt': 'педик',
       'pidor.txt': 'пидор', 'pidrila.txt': 'пидрила'
     };
 
