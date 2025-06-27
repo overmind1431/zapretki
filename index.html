@@ -3,48 +3,170 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Генератор невидимых запреток</title>
+  <title>Генератор невидимых, скрытых запреток</title>
   <style>
-    :root { /* единая тема donation alerts */
-      --bg-color: #1e1e1e;
-      --card-bg: #2a2a2a;
-      --primary: #ff9933;
-      --text: #fff;
-      --radius: 8px;
-      --shadow: 0 2px 8px rgba(0,0,0,0.7);
-      --opacity: 0.4;
+    :root {
+      --bg-color: #121212;
+      --card-bg: #1e1e1e;
+      --primary-color: #bb86fc;
+      --text-color: #ffffff;
+      --border-radius: 8px;
+      --shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+      --non-russian-opacity: 0.4;
     }
-    *, *::before, *::after { box-sizing: border-box; }
-    body { margin:0; padding:16px; font-family:'Segoe UI',sans-serif; background:var(--bg-color); color:var(--text); }
-    h1 { text-align:center; margin-bottom:16px; }
-    .notice { background:var(--card-bg); padding:12px; border-radius:var(--radius); text-align:center; margin-bottom:16px; }
-    .main { display:flex; gap:24px; max-width:1200px; margin:0 auto; }
-    .sidebar, .speech-panel { flex:0 0 300px; background:var(--card-bg); box-shadow:var(--shadow); border-radius:var(--radius); padding:16px; }
-    .sidebar .tables { display:flex; gap:8px; overflow-x:auto; }
-    table { border-collapse:collapse; width:100%; font-size:0.75em; }
-    th, td { border:1px solid #444; padding:4px 6px; text-align:center; }
-    th { background:#333; }
-    .content { flex:1; display:flex; flex-direction:column; }
-    .controls { display:flex; flex-wrap:wrap; gap:16px; background:var(--card-bg); padding:16px; box-shadow:var(--shadow); border-radius:var(--radius); margin-bottom:24px; }
-    .controls label { font-weight:600; display:flex; flex-direction:column; }
-    select, textarea { width:100%; padding:8px; border:1px solid #555; border-radius:var(--radius); background:#222; color:var(--text); font-family:'Segoe UI',sans-serif; }
-    .list-container { background:var(--card-bg); box-shadow:var(--shadow); border-radius:var(--radius); overflow:hidden; }
-    .list-container h2 { background:var(--primary); color:#000; padding:12px; margin:0; }
-    .list-container ul { list-style:none; padding:16px; margin:0; max-height:60vh; overflow-y:auto; }
-    .list-container li { padding:4px 0; border-bottom:1px solid #333; word-break:break-all; }
-    .list-container li:last-child { border:none; }
-    .non-russian { opacity:var(--opacity); }
-    button { width:100%; padding:10px; border:none; border-radius:var(--radius); background:var(--primary); color:#000; cursor:pointer; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: var(--bg-color);
+      color: var(--text-color);
+      line-height: 1.4;
+      padding: 16px;
+    }
+    h1 { font-size: 1.5em; margin-bottom: 8px; }
+    .notice {
+      background: #333;
+      color: var(--text-color);
+      padding: 12px;
+      border-radius: var(--border-radius);
+      margin-bottom: 24px;
+      font-size: 0.9em;
+    }
+    .main {
+      display: flex;
+      gap: 24px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    .sidebar {
+      flex: 0 0 300px;
+      background: var(--card-bg);
+      box-shadow: var(--shadow);
+      border-radius: var(--border-radius);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .sidebar .explanation {
+      font-size: 0.85em;
+      text-align: center;
+    }
+    .sidebar .tables {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      overflow-x: auto;
+    }
+    .sidebar table {
+      border-collapse: collapse;
+      width: 48%;
+      font-size: 0.75em;
+    }
+    .sidebar th, .sidebar td {
+      border: 1px solid #444;
+      padding: 4px 6px;
+      text-align: center;
+    }
+    .sidebar th {
+      background: #333;
+      font-weight: 600;
+    }
+    .content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .controls {
+      background: var(--card-bg);
+      box-shadow: var(--shadow);
+      border-radius: var(--border-radius);
+      padding: 16px;
+      margin-bottom: 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .controls div { display: flex; flex-direction: column; }
+    label { margin-bottom: 8px; font-weight: 600; }
+    select {
+      padding: 8px;
+      border: 1px solid #555;
+      border-radius: var(--border-radius);
+      background: #2a2a2a;
+      color: var(--text-color);
+    }
+    .list-container {
+      background: var(--card-bg);
+      box-shadow: var(--shadow);
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      flex: 1;
+    }
+    .list-container h2 {
+      background: var(--primary-color);
+      color: #fff;
+      padding: 12px 16px;
+      font-size: 1.1em;
+      margin: 0;
+    }
+    .list-container ul {
+      list-style: none;
+      padding: 16px;
+      margin: 0;
+      max-height: 60vh;
+      overflow-y: auto;
+    }
+    .list-container li {
+      padding: 4px 0;
+      border-bottom: 1px solid #333;
+      word-break: break-all;
+      font-size: 0.95em;
+    }
+    .list-container li:last-child { border-bottom: none; }
+    .non-russian { opacity: var(--non-russian-opacity); }
+    .speech-panel {
+      flex: 0 0 300px;
+      background: var(--card-bg);
+      box-shadow: var(--shadow);
+      border-radius: var(--border-radius);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .speech-panel textarea {
+      width: 100%;
+      height: 100px;
+      padding: 8px;
+      border: 1px solid #555;
+      border-radius: var(--border-radius);
+      background: #2a2a2a;
+      color: var(--text-color);
+      resize: vertical;
+    }
+    .speech-panel button {
+      padding: 10px;
+      border: none;
+      border-radius: var(--border-radius);
+      background: var(--primary-color);
+      color: #fff;
+      font-weight: 600;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
-    <h1>Генератор невидимых, скрытых запреток</h1>
+  <h1>Генератор невидимых, скрытых запреток</h1>
   <div class="notice">Как это было сделано? С помощью машинного зрения и синтезатора голоса мы перебрали миллион символов из UTF8, чтобы найти нечитаемые синтезатором речи омоглифы, которые идеально похожи на обычные русские буквы</div>
   <div class="main">
+
     <aside class="sidebar">
+      <div class="explanation">таблица с нечитаемыми омоглифами</div>
       <div class="tables">
         <table>
-          <thead><tr><th>Нормальная буква</th><th>Омоглиф</th></tr></thead>
+          <thead><tr><th>нормальная буква</th><th>нечитаемый омоглиф</th></tr></thead>
           <tbody>
             <tr><td>б</td><td>б</td></tr>
             <tr><td>в</td><td>ʙ</td></tr>
@@ -66,7 +188,7 @@
           </tbody>
         </table>
         <table>
-          <thead><tr><th>Нормальная буква</th><th>Омоглиф</th></tr></thead>
+          <thead><tr><th>нормальная буква</th><th>нечитаемый омоглиф</th></tr></thead>
           <tbody>
             <tr><td>А</td><td>Α</td></tr>
             <tr><td>В</td><td>Β</td></tr>
@@ -85,79 +207,50 @@
             <tr><td>У</td><td>Ꭹ</td></tr>
             <tr><td>Ф</td><td>Փ</td></tr>
             <tr><td>Х</td><td>Χ</td></tr>
+            <tr><td>Ч</td><td>Ⴗ</td></tr>
+            <tr><td>Ш</td><td>Ш</td></tr>
+            <tr><td>Ь</td><td>Ꮟ</td></tr>
+            <tr><td>Э</td><td>℈</td></tr>
           </tbody>
         </table>
       </div>
     </aside>
-    <div class="content">
+
+    <section class="content">
       <div class="controls">
-        <label>Регистр
-          <select id="reg"></select>
-        </label>
-        <label>Файл
-          <select id="file"></select>
-        </label>
+        <div><label for="registerSelect">Регистр</label><select id="registerSelect"></select></div>
+        <div><label for="fileSelect">Файл</label><select id="fileSelect"></select></div>
       </div>
       <div class="list-container">
-        <h2 id="title">Список слов</h2>
+        <h2 id="listTitle">Список слов</h2>
         <ul id="list"></ul>
       </div>
-    </div>
+    </section>
+
     <aside class="speech-panel">
-      <label>Текст
-        <textarea id="text" placeholder="Введите текст..."></textarea>
-      </label>
-      <button id="speak">Прослушать</button>
+      <label for="speechText">Текст для синтеза</label>
+      <textarea id="speechText" placeholder="Введите текст..."></textarea>
+      <button id="speakBtn">Прослушать</button>
     </aside>
+
   </div>
   <script>
-    const src = {
-      upper: { dir: 'UPPERCASE', files: ['churka.txt','daun.txt','hohol.txt','jid.txt','negr.txt','niga.txt','niger.txt','pedik.txt','pidor.txt','pidrila.txt'] },
-      lower: { dir: 'lowercase', files: ['churka.txt','daun.txt','hohol.txt','jid.txt','negr.txt','niga.txt','niger.txt','pedik.txt','pidor.txt'] }
-    };
-    const lab = {
-      'churka.txt': 'чурка', 'daun.txt': 'даун', 'hohol.txt': 'хохол', 'jid.txt': 'жид',
-      'negr.txt': 'негр', 'niga.txt': 'нига', 'niger.txt': 'нигер', 'pedik.txt': 'педик',
-      'pidor.txt': 'пидор', 'pidrila.txt': 'пидрила'
-    };
-    const reg = document.getElementById('reg'), file = document.getElementById('file'), list = document.getElementById('list'), title = document.getElementById('title');
-    const populate = () => {
-      reg.innerHTML = '';
-      ['upper','lower'].forEach(m => reg.add(new Option(m, m)));
-      file.innerHTML = '';
-      src[reg.value].files.forEach(f => file.add(new Option(lab[f] || f, f)));
-    };
-    const render = () => {
-      list.innerHTML = '';
-      title.textContent = lab[file.value] || file.value;
-      fetch(`${src[reg.value].dir}/${file.value}`)
-        .then(r => r.ok ? r.text() : Promise.reject(r.statusText))
-        .then(t => t.split(/\r?\n/).forEach(l => {
-          if (!l.trim()) return;
-          const li = document.createElement('li');
-          Array.from(l).forEach(ch => {
-            const span = document.createElement('span');
-            span.textContent = ch;
-            if (!/[А-Яа-яЁё\s]/.test(ch)) span.classList.add('non-russian');
-            li.append(span);
-          });
-          list.append(li);
-        }))
-        .catch(() => {});
-    };
-    reg.addEventListener('change', () => { populate(); render(); });
-    file.addEventListener('change', render);
-    populate(); render();
-    // speech synthesis with Irina
-    let voices = [];
-    speechSynthesis.onvoiceschanged = () => voices = speechSynthesis.getVoices();
-    voices = speechSynthesis.getVoices();
-    document.getElementById('speak').addEventListener('click', () => {
-      const utter = new SpeechSynthesisUtterance(document.getElementById('text').value);
+    // генерация списков
+    const sources = { upper: { dir: 'UPPERCASE', files: ['churka.txt','daun.txt','hohol.txt','jid.txt','negr.txt','niga.txt','niger.txt','pedik.txt','pidor.txt','pidrila.txt'] }, lower: { dir: 'lowercase', files: ['churka.txt','daun.txt','hohol.txt','jid.txt','negr.txt','niga.txt','niger.txt','pedik.txt','pidor.txt'] } };
+    const labels = { 'churka.txt':'чурка','daun.txt':'даун','hohol.txt':'хохол','jid.txt':'жид','negr.txt':'негр','niga.txt':'нига','niger.txt':'нигер','pedik.txt':'педик','pidor.txt':'пидор','pidrila.txt':'пидрила'};
+    const regSelect = document.getElementById('registerSelect'), fileSelect = document.getElementById('fileSelect'), list = document.getElementById('list'), listTitle = document.getElementById('listTitle');
+    function wrapChars(text) { return Array.from(text).map(ch => { const span = document.createElement('span'); span.textContent = ch; if (!/[А-Яа-яЁё\s]/.test(ch)) span.classList.add('non-russian'); return span; }); }
+    function populateRegisterSelect() { regSelect.innerHTML=''; [['ВЕРХНИЙ','upper'],['нижний','lower']].forEach(([t,v])=>regSelect.add(new Option(t,v))); regSelect.value='upper'; }
+    function populateFileSelect(mode) { fileSelect.innerHTML=''; sources[mode].files.forEach(f=>fileSelect.add(new Option(labels[f]||f,f))); fileSelect.selectedIndex=0; }
+    function renderList() { const mode=regSelect.value, file=fileSelect.value; list.innerHTML=''; listTitle.textContent=labels[file]||file; fetch(`${sources[mode].dir}/${file}`).then(r=>r.ok?r.text():Promise.reject(r.statusText)).then(t=>t.split(/\r?\n/).forEach(l=>{ if(l.trim()){ const li=document.createElement('li'); wrapChars(l).forEach(s=>li.appendChild(s)); list.appendChild(li);} })).catch(e=>list.innerHTML=`<li>Ошибка загрузки: ${e}</li>`); }
+    regSelect.addEventListener('change',()=>{ populateFileSelect(regSelect.value); renderList(); });
+    fileSelect.addEventListener('change', renderList);
+    populateRegisterSelect(); populateFileSelect('upper'); renderList();
+    // синтез речи
+    const speakBtn = document.getElementById('speakBtn'), speechText = document.getElementById('speechText');
+    speakBtn.addEventListener('click', () => {
+      const utter = new SpeechSynthesisUtterance(speechText.value);
       utter.lang = 'ru-RU';
-      let voice = voices.find(v => /Irina/i.test(v.name) && v.lang === 'ru-RU');
-      if (!voice) voice = voices.find(v => v.lang === 'ru-RU');
-      if (voice) utter.voice = voice;
       speechSynthesis.speak(utter);
     });
   </script>
