@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Просмотр слов</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: sans-serif;
+    }
+    .columns {
+      display: flex;
+      flex-wrap: wrap;
+      height: 100vh;
+    }
+    .column {
+      flex: 1 1 200px;
+      margin: 5px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+      overflow-y: auto;
+    }
+    .column h2 {
+      margin-top: 0;
+      font-size: 1.1em;
+      border-bottom: 1px solid #999;
+      padding-bottom: 4px;
+    }
+    .column ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .column li {
+      padding: 2px 0;
+      border-bottom: 1px solid #eee;
+      word-break: break-all;
+    }
+  </style>
+</head>
+<body>
+
+<div class="columns" id="container">
+  <!-- Скрипт подгрузит сюда колонки -->
+</div>
+
+<script>
+  // Папки и их файлы
+  const sources = [
+    { dir: 'UPPERCASE', files: [
+        'churka.txt','daun.txt','hohol.txt','jid.txt',
+        'negr.txt','niga.txt','niger.txt','pedik.txt',
+        'pidor.txt','pidrila.txt'
+      ]
+    },
+    { dir: 'lowercase', files: [
+        'churka.txt','daun.txt','hohol.txt','jid.txt',
+        'negr.txt','niga.txt','niger.txt','pedik.txt',
+        'pidor.txt'
+      ]
+    }
+  ];
+
+  const container = document.getElementById('container');
+
+  function createColumn(path, lines) {
+    const col = document.createElement('div');
+    col.className = 'column';
+
+    const title = document.createElement('h2');
+    title.textContent = path;
+    col.appendChild(title);
+
+    const ul = document.createElement('ul');
+    lines.forEach(l => {
+      if (!l.trim()) return;
+      const li = document.createElement('li');
+      li.textContent = l;
+      ul.appendChild(li);
+    });
+    col.appendChild(ul);
+    container.appendChild(col);
+  }
+
+  sources.forEach(src => {
+    src.files.forEach(fname => {
+      const relPath = `${src.dir}/${fname}`;
+      fetch(relPath)
+        .then(resp => {
+          if (!resp.ok) throw new Error(`${resp.status}`);
+          return resp.text();
+        })
+        .then(txt => {
+          const lines = txt.split(/\r?\n/);
+          createColumn(relPath, lines);
+        })
+        .catch(err => {
+          console.error(`Ошибка ${relPath}:`, err);
+          createColumn(relPath, [`Ошибка загрузки: ${err.message}`]);
+        });
+    });
+  });
+</script>
+
+</body>
+</html>
