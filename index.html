@@ -42,7 +42,6 @@
       font-size: 0.85em;
       color: var(--text-color);
       text-align: center;
-      margin-bottom: 8px;
     }
     .sidebar .tables {
       display: flex;
@@ -252,7 +251,9 @@
       renderList();
     });
     fileSelectUpper.addEventListener('change', renderList);
+    fileSelectUpper.addEventListener('input', renderList);
     fileSelectLower.addEventListener('change', renderList);
+    fileSelectLower.addEventListener('input', renderList);
 
     populateFileSelects();
     fileSelectLower.parentElement.style.display = 'none';
