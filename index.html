@@ -83,10 +83,10 @@
       <label><input type="radio" name="caseToggle" value="upper" id="toggleUpper" checked> ВЕРХНИЙ</label>
     </fieldset>
     <fieldset id="filesLower" class="file-list">
-      <legend>Нижний регистр: колонки</legend>
+      <legend>Нижний регистр: выбор слова</legend>
     </fieldset>
     <fieldset id="filesUpper" class="file-list">
-      <legend>ВЕРХНИЙ регистр: колонки</legend>
+      <legend>ВЕРХНИЙ регистр: выбор слова</legend>
     </fieldset>
   </div>
 
@@ -98,37 +98,28 @@
       upper: { dir: 'UPPERCASE', files: ['churka.txt','daun.txt','hohol.txt','jid.txt','negr.txt','niga.txt','niger.txt','pedik.txt','pidor.txt','pidrila.txt'] }
     };
     const labels = {
-      'churka.txt': 'чурка',
-      'daun.txt': 'даун',
-      'hohol.txt': 'хохол',
-      'jid.txt': 'жид',
-      'negr.txt': 'негр',
-      'niga.txt': 'нига',
-      'niger.txt': 'нигер',
-      'pedik.txt': 'педик',
-      'pidor.txt': 'пидор',
-      'pidrila.txt': 'пидрила'
+      'churka.txt': 'чурка','daun.txt': 'даун','hohol.txt': 'хохол','jid.txt': 'жид',
+      'negr.txt': 'негр','niga.txt': 'нига','niger.txt': 'нигер','pedik.txt': 'педик',
+      'pidor.txt': 'пидор','pidrila.txt': 'пидрила'
     };
     const container = document.getElementById('container');
     const fsLower = document.getElementById('filesLower');
     const fsUpper = document.getElementById('filesUpper');
 
     function initFileSelectors() {
-      Object.entries(sources).forEach(([mode, {files}]) => {
+      Object.entries(sources).forEach(([mode,{files}]) => {
         const fieldset = mode === 'lower' ? fsLower : fsUpper;
-        files.forEach(fname => {
+        files.forEach((fname,i) => {
           const id = `${mode}_${fname}`;
-          const cb = document.createElement('input');
-          cb.type = 'checkbox'; cb.id = id; cb.dataset.mode = mode; cb.dataset.file = fname; cb.checked = true;
+          const rb = document.createElement('input');
+          rb.type = 'radio'; rb.name = mode + '_file'; rb.id = id; rb.dataset.mode = mode; rb.dataset.file = fname;
+          if (i === 0) rb.checked = true;
           const label = document.createElement('label');
-          label.appendChild(cb);
-          label.appendChild(document.createTextNode(' ' + (labels[fname] || fname)));
+          label.appendChild(rb);
+          label.appendChild(document.createTextNode(' ' + (labels[fname]||fname)));
           fieldset.appendChild(label);
 
-          cb.addEventListener('change', () => {
-            const col = document.querySelector(`.column[data-mode="${mode}"][data-file="${fname}"]`);
-            if (col) col.classList.toggle('hidden', !cb.checked);
-          });
+          rb.addEventListener('change', () => renderSelection());
         });
       });
     }
@@ -137,51 +128,50 @@
       return Array.from(line).map(ch => {
         const span = document.createElement('span');
         span.textContent = ch;
-        // Русские буквы и пробел остаются
-        if (!/[А-Яа-яЁё\s]/.test(ch)) {
-          span.classList.add('non-russian');
-        }
+        if (!/[А-Яа-яЁё\s]/.test(ch)) span.classList.add('non-russian');
         return span;
       });
     }
 
-    function createColumn(mode, fname, lines) {
-      const col = document.createElement('div'); col.className = 'column'; col.dataset.mode = mode; col.dataset.file = fname;
-      const title = document.createElement('h2'); title.textContent = labels[fname] || fname; col.appendChild(title);
+    function createColumn(mode,fname,lines) {
+      const col = document.createElement('div'); col.className='column'; col.dataset.mode=mode; col.dataset.file=fname;
+      const h2 = document.createElement('h2'); h2.textContent = labels[fname]||fname; col.appendChild(h2);
       const ul = document.createElement('ul');
-      lines.forEach(line => {
-        if (!line.trim()) return;
-        const li = document.createElement('li');
-        wrapChars(line).forEach(span => li.appendChild(span));
-        ul.appendChild(li);
-      });
-      col.appendChild(ul);
-      container.appendChild(col);
+      lines.forEach(line=>{ if(!line.trim()) return; const li=document.createElement('li'); wrapChars(line).forEach(s=>li.appendChild(s)); ul.appendChild(li); });
+      col.appendChild(ul); container.appendChild(col);
     }
 
     function loadAll() {
-      Object.entries(sources).forEach(([mode, {dir, files}]) => {
-        files.forEach(fname => {
+      Object.entries(sources).forEach(([mode,{dir,files}])=>{
+        files.forEach(fname=>{
           fetch(`${dir}/${fname}`)
-            .then(resp => resp.ok ? resp.text() : Promise.reject(resp.statusText))
-            .then(txt => createColumn(mode, fname, txt.split(/\r?\n/)))
-            .catch(err => createColumn(mode, fname, [`Ошибка загрузки: ${err}`]));
+            .then(r=>r.ok?r.text():Promise.reject(r.statusText))
+            .then(txt=> createColumn(mode,fname,txt.split(/\r?\n/)))
+            .catch(e=> createColumn(mode,fname,[`Ошибка: ${e}`]));
         });
       });
     }
 
-    function applyMode(mode) {
+    function renderSelection() {
+      const mode = document.querySelector('input[name=caseToggle]:checked').value;
       fsLower.hidden = mode !== 'lower'; fsUpper.hidden = mode !== 'upper';
-      document.querySelectorAll('.column').forEach(c => {
-        const sel = document.getElementById(`${mode}_${c.dataset.file}`);
-        c.classList.toggle('hidden', c.dataset.mode !== mode || (sel && !sel.checked));
-      });
+      container.innerHTML = '';
+      const sel = document.querySelector(`input[name=${mode}_file]:checked`);
+      if (sel) {
+        const fname = sel.dataset.file;
+        const dir = sources[mode].dir;
+        fetch(`${dir}/${fname}`)
+          .then(r=>r.ok?r.text():Promise.reject(r.statusText))
+          .then(txt=> createColumn(mode,fname,txt.split(/\r?\n/)))
+          .catch(e=> createColumn(mode,fname,[`Ошибка: ${e}`]));
+      }
     }
 
+    // Инициализация
     initFileSelectors(); loadAll();
-    document.getElementById('toggleLower').addEventListener('change', () => applyMode('lower'));
-    document.getElementById('toggleUpper').addEventListener('change', () => applyMode('upper'));
-    window.addEventListener('load', () => applyMode('upper'));
+    document.getElementById('toggleLower').addEventListener('change', renderSelection);
+    document.getElementById('toggleUpper').addEventListener('change', renderSelection);
+    window.addEventListener('load', renderSelection);
   </script>
 </body>
 </html>
