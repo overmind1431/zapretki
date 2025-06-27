@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Генератор невидимых, скрытых запреток</title>
   <style>
     :root {
       --bg-color: #121212;
       --card-bg: #1e1e1e;
-      --primary-color: #bb86fc;
-      --text-color: #ffffff;
+      --primary-color: #0d6efd;
+      --text-color: #e0e0e0;
       --border-radius: 8px;
       --shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
       --non-russian-opacity: 0.4;
@@ -23,15 +23,16 @@
       padding: 16px;
     }
     h1 {
-      font-size: 1.5em;
-      margin-bottom: 8px;
+      margin-bottom: 16px;
+      text-align: center;
     }
     .notice {
-      background: #333;
-      padding: 12px;
+      background: var(--card-bg);
+      color: var(--text-color);
       border-radius: var(--border-radius);
-      margin-bottom: 24px;
-      font-size: 0.9em;
+      padding: 12px;
+      margin-bottom: 16px;
+      text-align: center;
     }
     .main {
       display: flex;
@@ -40,7 +41,7 @@
       margin: 0 auto;
     }
     .sidebar {
-      flex: 0 0 300px;
+      flex: 0 0 350px;
       background: var(--card-bg);
       box-shadow: var(--shadow);
       border-radius: var(--border-radius);
@@ -57,12 +58,12 @@
       display: flex;
       justify-content: space-between;
       gap: 8px;
-      overflow-x: auto;
     }
     .sidebar table {
       border-collapse: collapse;
       width: 48%;
       font-size: 0.75em;
+      color: var(--text-color);
     }
     .sidebar th, .sidebar td {
       border: 1px solid #444;
@@ -75,8 +76,6 @@
     }
     .content {
       flex: 1;
-      display: flex;
-      flex-direction: column;
     }
     .controls {
       background: var(--card-bg);
@@ -92,25 +91,24 @@
     }
     .controls div { display: flex; flex-direction: column; }
     label { margin-bottom: 8px; font-weight: 600; }
-    select {
+    select, textarea {
       padding: 8px;
       border: 1px solid #555;
       border-radius: var(--border-radius);
-      background: #2a2a2a;
+      background: #222;
       color: var(--text-color);
+      font-family: 'Segoe UI', sans-serif;
     }
     .list-container {
       background: var(--card-bg);
       box-shadow: var(--shadow);
       border-radius: var(--border-radius);
       overflow: hidden;
-      flex: 1;
     }
     .list-container h2 {
       background: var(--primary-color);
       color: #fff;
       padding: 12px 16px;
-      font-size: 1.1em;
       margin: 0;
     }
     .list-container ul {
@@ -131,43 +129,43 @@
     .speech-panel {
       flex: 0 0 300px;
       background: var(--card-bg);
-      box-shadow: var(--shadow);
       border-radius: var(--border-radius);
       padding: 16px;
+      box-shadow: var(--shadow);
       display: flex;
       flex-direction: column;
       gap: 12px;
     }
-    .speech-panel textarea {
-      width: 100%;
-      height: 100px;
-      padding: 8px;
-      border: 1px solid #555;
-      border-radius: var(--border-radius);
-      background: #2a2a2a;
-      color: var(--text-color);
-      resize: vertical;
-    }
-    .speech-panel button {
+    button {
       padding: 10px;
-      border: none;
       border-radius: var(--border-radius);
+      border: none;
       background: var(--primary-color);
       color: #fff;
-      font-weight: 600;
       cursor: pointer;
+    }
+    button:hover {
+      background: #0b5ed7;
     }
   </style>
 </head>
 <body>
   <h1>Генератор невидимых, скрытых запреток</h1>
-  <div class="notice">Как это было сделано? С помощью машинного зрения и синтезатора голоса мы перебрали миллион символов из UTF8, чтобы найти нечитаемые синтезатором речи омоглифы, которые идеально похожи на обычные русские буквы</div>
+  <div class="notice">
+    Как это было сделано? С помощью машинного зрения и синтезатора голоса мы перебрали миллион символов из UTF8,
+    чтобы найти нечитаемые синтезатором речи омоглифы, которые идеально похожи на обычные русские буквы.
+  </div>
   <div class="main">
     <aside class="sidebar">
-      <div class="explanation">таблица с нечитаемыми омоглифами</div>
+      <div class="explanation">Таблица с нечитаемыми омоглифами</div>
       <div class="tables">
         <table>
-          <thead><tr><th>нормальная буква</th><th>нечитаемый омоглиф</th></tr></thead>
+          <thead>
+            <tr>
+              <th>Нормальная буква</th>
+              <th>Нечитаемый омоглиф</th>
+            </tr>
+          </thead>
           <tbody>
             <tr><td>б</td><td>б</td></tr>
             <tr><td>в</td><td>ʙ</td></tr>
@@ -189,7 +187,12 @@
           </tbody>
         </table>
         <table>
-          <thead><tr><th>нормальная буква</th><th>нечитаемый омоглиф</th></tr></thead>
+          <thead>
+            <tr>
+              <th>Нормальная буква</th>
+              <th>Нечитаемый омоглиф</th>
+            </tr>
+          </thead>
           <tbody>
             <tr><td>А</td><td>Α</td></tr>
             <tr><td>В</td><td>Β</td></tr>
@@ -208,18 +211,27 @@
             <tr><td>У</td><td>Ꭹ</td></tr>
             <tr><td>Ф</td><td>Փ</td></tr>
             <tr><td>Х</td><td>Χ</td></tr>
-            <tr><td>Ч</td><td>Ⴗ</td></tr>
-            <tr><td>Ш</td><td>Ш</td></tr>
-            <tr><td>Ь</td><td>Ꮟ</td></tr>
-            <tr><td>Э</td><td>℈</td></tr>
           </tbody>
         </table>
       </div>
     </aside>
     <section class="content">
       <div class="controls">
-        <div><label for="registerSelect">Регистр</label><select id="registerSelect"></select></div>
-        <div><label for="fileSelect">Файл</label><select id="fileSelect"></select></div>
+        <div>
+          <label for="registerSelect">Регистр</label>
+          <select id="registerSelect">
+            <option value="upper">ВЕРХНИЙ</option>
+            <option value="lower">нижний</option>
+          </select>
+        </div>
+        <div>
+          <label for="fileSelectUpper">Файл (ВЕРХНИЙ)</label>
+          <select id="fileSelectUpper"></select>
+        </div>
+        <div>
+          <label for="fileSelectLower">Файл (нижний)</label>
+          <select id="fileSelectLower"></select>
+        </div>
       </div>
       <div class="list-container">
         <h2 id="listTitle">Список слов</h2>
@@ -228,34 +240,11 @@
     </section>
     <aside class="speech-panel">
       <label for="speechText">Текст для синтеза</label>
-      <textarea id="speechText" placeholder="Введите текст..."></textarea>
+      <textarea id="speechText" rows="5"></textarea>
       <button id="speakBtn">Прослушать</button>
     </aside>
   </div>
   <script>
-    // Подготовка голосов
-    let voices = [];
-    function loadVoices() { voices = speechSynthesis.getVoices(); }
-    speechSynthesis.onvoiceschanged = loadVoices;
-    loadVoices();
-
-    // Синтез речи с голосом "Максим"
-const speakBtn = document.getElementById('speakBtn');
-const speechText = document.getElementById('speechText');
-speakBtn.addEventListener('click', () => {
-  const utter = new SpeechSynthesisUtterance(speechText.value);
-  utter.lang = 'ru-RU';
-  // попытка найти голос Maxim
-  let voice = voices.find(v => /Maxim|Максим/i.test(v.name));
-  // если не найден, взять первый доступный русский голос
-  if (!voice) voice = voices.find(v => v.lang === 'ru-RU');
-  if (voice) utter.voice = voice;
-  utter.rate = 1;
-  utter.pitch = 1;
-  speechSynthesis.speak(utter);
-});
-
-// Загрузка списков слов
     const sources = {
       upper: { dir: 'UPPERCASE', files: ['churka.txt','daun.txt','hohol.txt','jid.txt','negr.txt','niga.txt','niger.txt','pedik.txt','pidor.txt','pidrila.txt'] },
       lower: { dir: 'lowercase', files: ['churka.txt','daun.txt','hohol.txt','jid.txt','negr.txt','niga.txt','niger.txt','pedik.txt','pidor.txt'] }
@@ -266,10 +255,14 @@ speakBtn.addEventListener('click', () => {
       'pidor.txt': 'пидор', 'pidrila.txt': 'пидрила'
     };
     const regSelect = document.getElementById('registerSelect');
-    const fileSelect = document.getElementById('fileSelect');
+    const fileSelectUpper = document.getElementById('fileSelectUpper');
+    const fileSelectLower = document.getElementById('fileSelectLower');
     const list = document.getElementById('list');
     const listTitle = document.getElementById('listTitle');
-
+    function populateFileSelects() {
+      sources.upper.files.forEach(f => fileSelectUpper.add(new Option(labels[f], f)));
+      sources.lower.files.forEach(f => fileSelectLower.add(new Option(labels[f], f)));
+    }
     function wrapChars(text) {
       return Array.from(text).map(ch => {
         const span = document.createElement('span');
@@ -278,41 +271,45 @@ speakBtn.addEventListener('click', () => {
         return span;
       });
     }
-
-    function populateRegisterSelect() {
-      regSelect.innerHTML = '';
-      [['ВЕРХНИЙ','upper'], ['нижний','lower']].forEach(([t,v]) => regSelect.add(new Option(t,v)));
-      regSelect.value = 'upper';
-    }
-
-    function populateFileSelect(mode) {
-      fileSelect.innerHTML = '';
-      sources[mode].files.forEach(f => fileSelect.add(new Option(labels[f]||f, f)));
-      fileSelect.selectedIndex = 0;
-    }
-
     function renderList() {
       const mode = regSelect.value;
-      const file = fileSelect.value;
+      const selFile = mode === 'upper' ? fileSelectUpper.value : fileSelectLower.value;
+      const dir = sources[mode].dir;
       list.innerHTML = '';
-      listTitle.textContent = labels[file] || file;
-      fetch(`${sources[mode].dir}/${file}`)
+      listTitle.textContent = labels[selFile];
+      fetch(`${dir}/${selFile}`)
         .then(r => r.ok ? r.text() : Promise.reject(r.statusText))
-        .then(txt => txt.split(/\r?\n/).forEach(line => {
+        .then(text => text.split(/\r?\n/).forEach(line => {
           if (!line.trim()) return;
-          const li = document.createElement('li');
-          wrapChars(line).forEach(s => li.appendChild(s));
+          const li = document.createElement('li'); wrapChars(line).forEach(s=>li.appendChild(s));
           list.appendChild(li);
         }))
         .catch(e => list.innerHTML = `<li>Ошибка загрузки: ${e}</li>`);
     }
-
-    regSelect.addEventListener('change', () => { populateFileSelect(regSelect.value); renderList(); });
-    fileSelect.addEventListener('change', renderList);
-
-    populateRegisterSelect();
-    populateFileSelect('upper');
+    regSelect.addEventListener('change', () => {
+      fileSelectUpper.parentElement.style.display = regSelect.value==='upper'?'block':'none';
+      fileSelectLower.parentElement.style.display = regSelect.value==='lower'?'block':'none';
+      renderList();
+    });
+    fileSelectUpper.addEventListener('change', renderList);
+    fileSelectLower.addEventListener('change', renderList);
+    populateFileSelects();
+    fileSelectLower.parentElement.style.display = 'none';
     renderList();
+    // speech synthesis
+    let voices = [];
+    function loadVoices() { voices = speechSynthesis.getVoices(); }
+    speechSynthesis.onvoiceschanged = loadVoices;
+    loadVoices();
+    document.getElementById('speakBtn').addEventListener('click',()=>{
+      const u=new SpeechSynthesisUtterance(document.getElementById('speechText').value);
+      u.lang='ru-RU';
+      let v=voices.find(v=>/Maxim|Максим/i.test(v.name));
+      if(!v) v=voices.find(v=>/Pavel/i.test(v.name)&&v.lang==='ru-RU');
+      if(!v) v=voices.find(v=>v.lang==='ru-RU');
+      if(v) u.voice=v;
+      speechSynthesis.speak(u);
+    });
   </script>
 </body>
 </html>
