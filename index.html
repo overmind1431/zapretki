@@ -5,218 +5,172 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Просмотр слов по регистру и колонкам</title>
   <style>
-    body {
+    :root {
+      --bg-color: #f0f2f5;
+      --card-bg: #ffffff;
+      --primary-color: #0061f2;
+      --text-color: #333333;
+      --border-radius: 8px;
+      --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    * {
+      box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: sans-serif;
+    }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: var(--bg-color);
+      color: var(--text-color);
+      line-height: 1.4;
     }
     .controls {
-      padding: 10px;
-      background: #f5f5f5;
-      border-bottom: 1px solid #ccc;
+      padding: 16px;
+      background: var(--card-bg);
+      box-shadow: var(--shadow);
+      border-radius: var(--border-radius);
+      max-width: 1200px;
+      margin: 16px auto;
     }
-    .controls fieldset {
-      margin: 0 0 10px;
-      padding: 10px;
-      border: 1px solid #aaa;
+    fieldset {
+      border: none;
+      margin-bottom: 12px;
     }
-    .controls legend {
-      font-weight: bold;
+    legend {
+      font-size: 1em;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+    .register-switch label {
+      margin-right: 24px;
+      cursor: pointer;
+    }
+    .register-switch input {
+      margin-right: 6px;
+    }
+    .file-list label {
+      display: inline-flex;
+      align-items: center;
+      margin: 4px 12px 4px 0;
+      cursor: pointer;
+      font-size: 0.95em;
+    }
+    .file-list input {
+      margin-right: 6px;
     }
     .columns {
       display: flex;
       flex-wrap: wrap;
-      height: calc(100vh - 140px);
+      gap: 16px;
+      max-width: 1200px;
+      margin: 0 auto 16px;
     }
     .column {
-      flex: 1 1 200px;
-      margin: 5px;
-      padding: 10px;
-      border: 1px solid #ccc;
-      box-sizing: border-box;
-      overflow-y: auto;
+      background: var(--card-bg);
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow);
+      flex: 1 1 280px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .column.hidden {
+      display: none;
     }
     .column h2 {
-      margin-top: 0;
-      font-size: 1.1em;
-      border-bottom: 1px solid #999;
-      padding-bottom: 4px;
+      padding: 12px 16px;
+      background: var(--primary-color);
+      color: #ffffff;
+      font-size: 1.05em;
+      font-weight: 600;
     }
     .column ul {
       list-style: none;
-      padding: 0;
-      margin: 0;
+      overflow-y: auto;
+      padding: 12px 16px;
+      flex: 1;
     }
     .column li {
-      padding: 2px 0;
-      border-bottom: 1px solid #eee;
+      padding: 4px 0;
+      border-bottom: 1px solid #e0e0e0;
       word-break: break-all;
+      font-size: 0.95em;
     }
-    .hidden {
-      display: none !important;
+    .column li:last-child {
+      border-bottom: none;
     }
   </style>
 </head>
 <body>
-
   <div class="controls">
-    <fieldset>
+    <fieldset class="register-switch">
       <legend>Регистр</legend>
       <label><input type="radio" name="caseToggle" value="lower" id="toggleLower"> нижний</label>
-      <label style="margin-left:20px;"><input type="radio" name="caseToggle" value="upper" id="toggleUpper" checked> ВЕРХНИЙ</label>
+      <label><input type="radio" name="caseToggle" value="upper" id="toggleUpper" checked> ВЕРХНИЙ</label>
     </fieldset>
-
-    <fieldset id="filesLower">
-      <legend>Нижний регистр: выбор колонок</legend>
-      <!-- чекбоксы заполнит скрипт -->
+    <fieldset id="filesLower" class="file-list">
+      <legend>Нижний регистр: колонки</legend>
+      <!-- чекбоксы -->
     </fieldset>
-    <fieldset id="filesUpper">
-      <legend>ВЕРХНИЙ регистр: выбор колонок</legend>
-      <!-- чекбоксы заполнит скрипт -->
+    <fieldset id="filesUpper" class="file-list">
+      <legend>ВЕРХНИЙ регистр: колонки</legend>
+      <!-- чекбоксы -->
     </fieldset>
   </div>
-
-  <div class="columns" id="container">
-    <!-- колонки подгрузятся скриптом -->
-  </div>
-
+  <div class="columns" id="container"></div>
   <script>
-    // Настройки источников
     const sources = {
-      lower: {
-        dir: 'lowercase',
-        files: [
-          'churka.txt','daun.txt','hohol.txt','jid.txt',
-          'negr.txt','niga.txt','niger.txt','pedik.txt',
-          'pidor.txt'
-        ]
-      },
-      upper: {
-        dir: 'UPPERCASE',
-        files: [
-          'churka.txt','daun.txt','hohol.txt','jid.txt',
-          'negr.txt','niga.txt','niger.txt','pedik.txt',
-          'pidor.txt','pidrila.txt'
-        ]
-      }
+      lower: { dir: 'lowercase', files: ['churka.txt','daun.txt','hohol.txt','jid.txt','negr.txt','niga.txt','niger.txt','pedik.txt','pidor.txt'] },
+      upper: { dir: 'UPPERCASE', files: ['churka.txt','daun.txt','hohol.txt','jid.txt','negr.txt','niga.txt','niger.txt','pedik.txt','pidor.txt','pidrila.txt'] }
     };
-
-    // Русские имена для файлов
-    const labels = {
-      'churka.txt': 'чурка',
-      'daun.txt': 'даун',
-      'hohol.txt': 'хохол',
-      'jid.txt': 'жид',
-      'negr.txt': 'негр',
-      'niga.txt': 'нига',
-      'niger.txt': 'нигер',
-      'pedik.txt': 'педик',
-      'pidor.txt': 'пидор',
-      'pidrila.txt': 'пидрила'
-    };
-
+    const labels = { churka.txt: 'чурка', daun.txt: 'даун', hohol.txt: 'хохол', jid.txt: 'жид', negr.txt: 'негр', niga.txt: 'нига', niger.txt: 'нигер', pedik.txt: 'педик', pidor.txt: 'пидор', pidrila.txt: 'пидрила' };
     const container = document.getElementById('container');
     const fsLower = document.getElementById('filesLower');
     const fsUpper = document.getElementById('filesUpper');
-
-    // Создаёт чекбоксы для каждого файла в секции
     function initFileSelectors() {
-      Object.entries(sources).forEach(([mode, {files}]) => {
-        const fieldset = mode === 'lower' ? fsLower : fsUpper;
-        files.forEach(fname => {
-          const id = `${mode}_${fname}`;
-          const lbl = labels[fname] || fname;
-          const cb = document.createElement('input');
-          cb.type = 'checkbox';
-          cb.id = id;
-          cb.dataset.mode = mode;
-          cb.dataset.file = fname;
-          cb.checked = true;
-          const label = document.createElement('label');
-          label.htmlFor = id;
-          label.textContent = ' ' + lbl;
-          fieldset.appendChild(cb);
-          fieldset.appendChild(label);
-          fieldset.appendChild(document.createElement('br'));
-
-          cb.addEventListener('change', () => {
-            const col = document.querySelector(`.column[data-mode="${mode}"][data-file="${fname}"]`);
-            if (col) col.classList.toggle('hidden', !cb.checked);
+      Object.entries(sources).forEach(([mode,{files}]) => {
+        const field = mode === 'lower' ? fsLower : fsUpper;
+        files.forEach(f => {
+          const id = `${mode}_${f}`;
+          const cb = Object.assign(document.createElement('input'),{type:'checkbox',id,checked:true});
+          cb.dataset.mode=mode;cb.dataset.file=f;
+          const lbl = Object.assign(document.createElement('label'),{htmlFor:id,textContent: ' ' + (labels[f]||f)});
+          lbl.prepend(cb);
+          field.append(lbl);
+          cb.addEventListener('change',()=>{
+            const col = document.querySelector(`.column[data-mode="${mode}"][data-file="${f}"]`);
+            if(col) col.classList.toggle('hidden',!cb.checked);
           });
         });
       });
     }
-
-    // Создаёт одну колонку
-    function createColumn(mode, fname, lines) {
-      const col = document.createElement('div');
-      col.className = 'column';
-      col.dataset.mode = mode;
-      col.dataset.file = fname;
-
-      const title = document.createElement('h2');
-      title.textContent = labels[fname] || fname;
-      col.appendChild(title);
-
-      const ul = document.createElement('ul');
-      lines.forEach(l => {
-        if (!l.trim()) return;
-        const li = document.createElement('li');
-        li.textContent = l;
-        ul.appendChild(li);
-      });
-      col.appendChild(ul);
-      container.appendChild(col);
+    function createColumn(mode,f,lines){
+      const col=document.createElement('div');col.className='column';col.dataset.mode=mode;col.dataset.file=f;
+      const h2=document.createElement('h2');h2.textContent=labels[f]||f;col.append(h2);
+      const ul=document.createElement('ul');lines.forEach(l=>{if(l.trim())ul.append(Object.assign(document.createElement('li'),{textContent:l}));});col.append(ul);
+      container.append(col);
     }
-
-    // Загружает все файлы и создаёт колонки
-    function loadAll() {
-      Object.entries(sources).forEach(([mode, {dir, files}]) => {
-        files.forEach(fname => {
-          const rel = `${dir}/${fname}`;
-          fetch(rel)
-            .then(r => {
-              if (!r.ok) throw new Error(r.statusText);
-              return r.text();
-            })
-            .then(txt => {
-              createColumn(mode, fname, txt.split(/\r?\n/));
-            })
-            .catch(e => {
-              createColumn(mode, fname, [`Ошибка загрузки: ${e.message}`]);
-            });
+    function loadAll(){
+      Object.entries(sources).forEach(([mode,{dir,files}])=>{
+        files.forEach(f=>{
+          fetch(`${dir}/${f}`)
+            .then(r=>r.ok?r.text():Promise.reject(r.statusText))
+            .then(t=>createColumn(mode,f,t.split(/\r?\n/)))
+            .catch(e=>createColumn(mode,f,[`Ошибка: ${e}`]));
         });
       });
     }
-
-    // Показывает/скрывает секцию чекбоксов и колонки по режиму
-    function applyMode(mode) {
-      fsLower.classList.toggle('hidden', mode !== 'lower');
-      fsUpper.classList.toggle('hidden', mode !== 'upper');
-      document.querySelectorAll('.column').forEach(col => {
-        col.classList.toggle('hidden', col.dataset.mode !== mode || 
-          !document.querySelector(`#${mode}_${col.dataset.file}`).checked
-        );
+    function applyMode(mode){
+      fsLower.hidden = mode!=='lower'; fsUpper.hidden = mode!=='upper';
+      document.querySelectorAll('.column').forEach(c=>{
+        const sel = document.getElementById(`${mode}_${c.dataset.file}`);
+        c.classList.toggle('hidden',c.dataset.mode!==mode || !sel.checked);
       });
     }
-
-    // Инициализация
-    initFileSelectors();
-    loadAll();
-
-    // Слушатели радио
-    document.getElementById('toggleLower').addEventListener('change', () => {
-      if (toggleLower.checked) applyMode('lower');
-    });
-    document.getElementById('toggleUpper').addEventListener('change', () => {
-      if (toggleUpper.checked) applyMode('upper');
-    });
-
-    // По умолчанию
-    window.addEventListener('load', () => {
-      applyMode('upper');
-    });
+    initFileSelectors(); loadAll();
+    document.getElementById('toggleLower').addEventListener('change',()=>applyMode('lower'));
+    document.getElementById('toggleUpper').addEventListener('change',()=>applyMode('upper'));
+    window.addEventListener('load',()=>applyMode('upper'));
   </script>
-
 </body>
 </html>
