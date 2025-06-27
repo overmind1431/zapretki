@@ -240,18 +240,22 @@
     loadVoices();
 
     // Синтез речи с голосом "Максим"
-    const speakBtn = document.getElementById('speakBtn');
-    const speechText = document.getElementById('speechText');
-    speakBtn.addEventListener('click', () => {
-      const utter = new SpeechSynthesisUtterance(speechText.value);
-      utter.lang = 'ru-RU';
-      const voice = voices.find(v => /Maxim|Максим/i.test(v.name));
-      if (voice) utter.voice = voice;
-      utter.rate = 1; utter.pitch = 1;
-      speechSynthesis.speak(utter);
-    });
+const speakBtn = document.getElementById('speakBtn');
+const speechText = document.getElementById('speechText');
+speakBtn.addEventListener('click', () => {
+  const utter = new SpeechSynthesisUtterance(speechText.value);
+  utter.lang = 'ru-RU';
+  // попытка найти голос Maxim
+  let voice = voices.find(v => /Maxim|Максим/i.test(v.name));
+  // если не найден, взять первый доступный русский голос
+  if (!voice) voice = voices.find(v => v.lang === 'ru-RU');
+  if (voice) utter.voice = voice;
+  utter.rate = 1;
+  utter.pitch = 1;
+  speechSynthesis.speak(utter);
+});
 
-    // Загрузка списков слов
+// Загрузка списков слов
     const sources = {
       upper: { dir: 'UPPERCASE', files: ['churka.txt','daun.txt','hohol.txt','jid.txt','negr.txt','niga.txt','niger.txt','pedik.txt','pidor.txt','pidrila.txt'] },
       lower: { dir: 'lowercase', files: ['churka.txt','daun.txt','hohol.txt','jid.txt','negr.txt','niga.txt','niger.txt','pedik.txt','pidor.txt'] }
