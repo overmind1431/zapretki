@@ -179,15 +179,10 @@
     }
     .donation .icon-crypto {
       display: inline-block;
-      width: 20px; /* Установите желаемую ширину иконок */
-      height: 20px; /* Установите желаемую высоту иконок */
+      width: 20px;
+      height: 20px;
       margin-right: 8px;
-      vertical-align: middle; /* Выравнивание иконок по центру текста */
-    }
-    .donation .icon-crypto svg {
-      width: 100%;
-      height: 100%;
-      fill: currentColor; /* Заливка SVG текущим цветом текста */
+      flex-shrink: 0;
     }
     .donation a {
       color: var(--primary-color);
@@ -274,36 +269,12 @@
       <div class="donation">
         <h3>Поддержать меня</h3>
         <ul>
-          <li>
-            <span class="icon-crypto">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M16 0C7.163 0 0 7.163 0 16s7.163 16 16 16 16-7.163 16-16S24.837 0 16 0zm-1.875 25.109V19.49H11.5v5.619h-2.125V6.89h6.5c2.75 0 4.875 1.75 4.875 4.5s-2.125 4.5-4.875 4.5h-4.625v9.219h-2.125zm0-11.369h4.625c1.625 0 2.75-1 2.75-2.5s-1.125-2.5-2.75-2.5h-4.625v5z"/></svg>
-            </span>Bitcoin: bc1qj3gvs0qjqgx637r4ch00neukrh3n98m0ljf8j3
-          </li>
-          <li>
-            <span class="icon-crypto">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M16 0C7.163 0 0 7.163 0 16s7.163 16 16 16 16-7.163 16-16S24.837 0 16 0zm0 18.006c-.496 0-.898-.403-.898-.898V9.814c0-.496.403-.898.898-.898.496 0 .898.403.898.898v7.294c0 .496-.403.898-.898.898zm0 5.617c-.496 0-.898-.403-.898-.898v-2.316c0-.496.403-.898.898-.898.496 0 .898.403.898.898v2.316c0 .496-.403.898-.898.898z"/></svg>
-            </span>Ethereum: 0x1B5310cad9F99f1FAbA21512f54eB83538356A54
-          </li>
-          <li>
-            <span class="icon-crypto">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M16 0C7.163 0 0 7.163 0 16s7.163 16 16 16 16-7.163 16-16S24.837 0 16 0zm-3.621 21.054c-1.391.242-2.366-.549-2.203-1.637l.635-4.101c.174-1.121 1.15-1.895 2.525-2.138l2.969-.504c.328-.056.525-.332.525-.668v-.658c0-.623-.424-.959-.97-.959-.629 0-1.118.39-1.315.936-.109.289-.39.463-.699.463-.223 0-.412-.087-.514-.261-.096-.174-.15-.261-.15-.436 0-1.295 1.575-2.22 3.129-2.22 1.637 0 2.658.823 2.658 2.138v2.417c0 .623.424.959.97.959.629 0 1.118-.39 1.315-.936.109-.289.39-.463.699-.463.223 0 .412.087.514.261.096.174.15.261.15.436 0 1.295-1.575 2.22-3.129 2.22l-2.97.504c-.328.056-.525.332-.525.668v.658c0 .623.424.959.97.959.629 0 1.118-.39 1.315-.936.109-.289.39-.463.699-.463.223 0 .412.087.514.261.096.174.15.261.15.436 0 1.295-1.575 2.22-3.129 2.22zM16 32c-8.837 0-16-7.163-16-16S7.163 0 16 0s16 7.163 16 16-7.163 16-16 16z"/></svg>
-            </span>USDT (TRC-20): TTxGSWYegcrCioF7aGjfoYFr6yMzACcURd
-          </li>
-          <li>
-            <span class="icon-crypto">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M16 0C7.163 0 0 7.163 0 16s7.163 16 16 16 16-7.163 16-16S24.837 0 16 0zm-1.875 25.109V19.49H11.5v5.619h-2.125V6.89h6.5c2.75 0 4.875 1.75 4.875 4.5s-2.125 4.5-4.875 4.5h-4.625v9.219h-2.125zm0-11.369h4.625c1.625 0 2.75-1 2.75-2.5s-1.125-2.5-2.75-2.5h-4.625v5z"/></svg>
-            </span>Litecoin: ltc1q6vrw4ekcqj66qdz9t7pnue4q05l47pzhqz5wu6
-          </li>
-          <li>
-            <span class="icon-crypto">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M16 0C7.163 0 0 7.163 0 16s7.163 16 16 16 16-7.163 16-16S24.837 0 16 0zm0 21.054c-1.391.242-2.366-.549-2.203-1.637l.635-4.101c.174-1.121 1.15-1.895 2.525-2.138l2.969-.504c.328-.056.525-.332.525-.668v-.658c0-.623-.424-.959-.97-.959-.629 0-1.118.39-1.315.936-.109.289-.39.463-.699.463-.223 0-.412-.087-.514-.261-.096-.174-.15-.261-.15-.436 0-1.295 1.575-2.22 3.129-2.22 1.637 0 2.658.823 2.658 2.138v2.417c0 .623.424.959.97.959.629 0 1.118-.39 1.315-.936.109-.289.39-.463.699-.463.223 0 .412.087.514.261.096.174.15.261.15.436 0 1.295-1.575 2.22-3.129 2.22l-2.97.504c-.328.056-.525.332-.525.668v.658c0 .623.424.959.97.959.629 0 1.118-.39 1.315-.936.109-.289.39-.463.699-.463.223 0 .412.087.514.261.096.174.15.261.15.436 0 1.295-1.575 2.22-3.129 2.22zM16 32c-8.837 0-16-7.163-16-16S7.163 0 16 0s16 7.163 16 16-7.163 16-16 16z"/></svg>
-            </span>Solana: 4nUzv4rUnHMTTALiuHyVNbF4PGF5VRdY5734nQng7sLy
-          </li>
-          <li>
-            <span class="icon-crypto">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M16 0C7.163 0 0 7.163 0 16s7.163 16 16 16 16-7.163 16-16S24.837 0 16 0zm-1.875 25.109V19.49H11.5v5.619h-2.125V6.89h6.5c2.75 0 4.875 1.75 4.875 4.5s-2.125 4.5-4.875 4.5h-4.625v9.219h-2.125zm0-11.369h4.625c1.625 0 2.75-1 2.75-2.5s-1.125-2.5-2.75-2.5h-4.625v5z"/></svg>
-            </span>Ton: UQA2JCkZQbm8B6qYp3w1w12hxwQQKzoLBenR2UR-oHbOowOe
-          </li>
+          <li><img src="https://cryptologos.cc/logos/bitcoin-btc-logo.png" alt="Bitcoin" class="icon-crypto">Bitcoin: bc1qj3gvs0qjqgx637r4ch00neukrh3n98m0ljf8j3</li>
+          <li><img src="https://cryptologos.cc/logos/ethereum-eth-logo.png" alt="Ethereum" class="icon-crypto">Ethereum: 0x1B5310cad9F99f1FAbA21512f54eB83538356A54</li>
+          <li><img src="https://cryptologos.cc/logos/tether-usdt-logo.png" alt="USDT" class="icon-crypto">USDT (TRC-20): TTxGSWYegcrCioF7aGjfoYFr6yMzACcURd</li>
+          <li><img src="https://cryptologos.cc/logos/litecoin-ltc-logo.png" alt="Litecoin" class="icon-crypto">Litecoin: ltc1q6vrw4ekcqj66qdz9t7pnue4q05l47pzhqz5wu6</li>
+          <li><img src="https://cryptologos.cc/logos/solana-sol-logo.png" alt="Solana" class="icon-crypto">Solana: 4nUzv4rUnHMTTALiuHyVNbF4PGF5VRdY5734nQng7sLy</li>
+          <li><img src="https://cryptologos.cc/logos/toncoin-ton-logo.png" alt="Ton" class="icon-crypto">Ton: UQA2JCkZQbm8B6qYp3w1w12hxwQQKzoLBenR2UR-oHbOowOe</li>
           <li><span class="icon-crypto">🔗</span><a href="https://www.donationalerts.com/r/overminded" target="_blank">donationalerts.com/r/overminded</a></li>
         </ul>
       </div>
