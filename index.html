@@ -37,7 +37,7 @@
       max-width: 1400px;
       margin: 0 auto;
     }
-    .sidebar {
+    .sidebar, .speech-panel {
       flex: 0 0 300px;
       background: var(--card-bg);
       box-shadow: var(--shadow);
@@ -131,16 +131,6 @@
     }
     .list-container li:last-child { border-bottom: none; }
     .non-russian { opacity: var(--non-russian-opacity); }
-    .speech-panel {
-      flex: 0 0 300px;
-      background: var(--card-bg);
-      box-shadow: var(--shadow);
-      border-radius: var(--border-radius);
-      padding: 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
     .speech-panel textarea {
       width: 100%;
       height: 100px;
@@ -166,6 +156,37 @@
     }
     .speech-panel button .icon {
       font-size: 1.2em;
+    }
+    .donation {
+      margin-top: 16px;
+      border-top: 1px solid #444;
+      padding-top: 16px;
+    }
+    .donation h3 {
+      font-size: 1em;
+      margin-bottom: 12px;
+      font-weight: 600;
+    }
+    .donation ul {
+      list-style: none;
+      padding: 0;
+    }
+    .donation li {
+      display: flex;
+      align-items: center;
+      margin-bottom: 8px;
+      font-size: 0.95em;
+    }
+    .donation .icon-crypto {
+      display: inline-block;
+      width: 20px;
+      text-align: center;
+      margin-right: 8px;
+    }
+    .donation a {
+      color: var(--primary-color);
+      text-decoration: none;
+      word-break: break-all;
     }
   </style>
 </head>
@@ -197,6 +218,18 @@
       <label for="speechText">Текст для синтеза</label>
       <textarea id="speechText" placeholder="Введите текст..."></textarea>
       <button id="speakBtn"><span class="icon">▶️</span>Прослушать</button>
+      <div class="donation">
+        <h3>Поддержать меня</h3>
+        <ul>
+          <li><span class="icon-crypto">₿</span>Bitcoin: bc1qj3gvs0qjqgx637r4ch00neukrh3n98m0ljf8j3</li>
+          <li><span class="icon-crypto">⧫</span>Ethereum: 0x1B5310cad9F99f1FAbA21512f54eB83538356A54</li>
+          <li><span class="icon-crypto">Ⓣ</span>USDT (TRC-20): TTxGSWYegcrCioF7aGjfoYFr6yMzACcURd</li>
+          <li><span class="icon-crypto">Ł</span>Litecoin: ltc1q6vrw4ekcqj66qdz9t7pnue4q05l47pzhqz5wu6</li>
+          <li><span class="icon-crypto">◎</span>Solana: 4nUzv4rUnHMTTALiuHyVNbF4PGF5VRdY5734nQng7sLy</li>
+          <li><span class="icon-crypto">⚡</span>Ton: UQA2JCkZQbm8B6qYp3w1w12hxwQQKzoLBenR2UR-oHbOowOe</li>
+          <li><span class="icon-crypto">🔗</span><a href="https://www.donationalerts.com/r/overminded" target="_blank">donationalerts.com/r/overminded</a></li>
+        </ul>
+      </div>
     </aside>
 
   </div>
@@ -206,7 +239,7 @@
     const labels = { 'churka.txt':'чурка','daun.txt':'даун','hohol.txt':'хохол','jid.txt':'жид','negr.txt':'негр','niga.txt':'нига','niger.txt':'нигер','pedik.txt':'педик','pidor.txt':'пидор','pidrila.txt':'пидрила'};
     const regSelect = document.getElementById('registerSelect'), fileSelect = document.getElementById('fileSelect'), list = document.getElementById('list'), listTitle = document.getElementById('listTitle');
     function wrapChars(text) { return Array.from(text).map(ch => { const span = document.createElement('span'); span.textContent = ch; if (!/[А-Яа-яЁё\s]/.test(ch)) span.classList.add('non-russian'); return span; }); }
-    function populateRegisterSelect() { regSelect.innerHTML=''; [['ВЕРХНИЙ','upper'],['нижний','lower']].forEach(([t,v])=>regSelect.add(new Option(t,v))); regSelect.value='upper'; }
+    function populateRegisterSelect() { regSelect.innerHTML=''; [['ВЕРХНИЙ','upper'],['нижний','lower']].forEach(([t,v])=>regSelect.add(new Option(t,v))); regSelect	value='upper'; }
     function populateFileSelect(mode) { fileSelect.innerHTML=''; sources[mode].files.forEach(f=>fileSelect.add(new Option(labels[f]||f,f))); fileSelect.selectedIndex=0; }
     function renderList() { const mode=regSelect.value, file=fileSelect.value; list.innerHTML=''; listTitle.textContent=labels[file]||file; fetch(`${sources[mode].dir}/${file}`).then(r=>r.ok?r.text():Promise.reject(r.statusText)).then(t=>t.split(/\r?\n/).forEach(l=>{ if(l.trim()){ const li=document.createElement('li'); wrapChars(l).forEach(s=>li.appendChild(s)); list.appendChild(li);} })).catch(e=>list.innerHTML=`<li>Ошибка загрузки: ${e}</li>`); }
     regSelect.addEventListener('change',()=>{ populateFileSelect(regSelect.value); renderList(); });
