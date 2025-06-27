@@ -197,8 +197,55 @@
 
     <aside class="sidebar">
       <div class="explanation">таблица с нечитаемыми омоглифами</div>
-      <div class="tables"> <!-- таблицы не менялись -->
-        <!-- ... -->
+      <div class="tables">
+        <table>
+          <thead><tr><th>нормальная буква</th><th>нечитаемый омоглиф</th></tr></thead>
+          <tbody>
+            <tr><td>б</td><td>б</td></tr>
+            <tr><td>в</td><td>ʙ</td></tr>
+            <tr><td>г</td><td>ᴦ</td></tr>
+            <tr><td>е</td><td>℮</td></tr>
+            <tr><td>з</td><td>ɜ</td></tr>
+            <tr><td>и</td><td>ͷ</td></tr>
+            <tr><td>к</td><td>ĸ</td></tr>
+            <tr><td>л</td><td>ᴫ</td></tr>
+            <tr><td>м</td><td>ᴍ</td></tr>
+            <tr><td>н</td><td>ʜ</td></tr>
+            <tr><td>о</td><td>ο</td></tr>
+            <tr><td>п</td><td>ᴨ</td></tr>
+            <tr><td>р</td><td>ⲣ</td></tr>
+            <tr><td>с</td><td>ϲ</td></tr>
+            <tr><td>т</td><td>ᴛ</td></tr>
+            <tr><td>ф</td><td>ɸ</td></tr>
+            <tr><td>я</td><td>ᴙ</td></tr>
+          </tbody>
+        </table>
+        <table>
+          <thead><tr><th>нормальная буква</th><th>нечитаемый омоглиф</th></tr></thead>
+          <tbody>
+            <tr><td>А</td><td>Α</td></tr>
+            <tr><td>В</td><td>Β</td></tr>
+            <tr><td>Г</td><td>Γ</td></tr>
+            <tr><td>Е</td><td>Ε</td></tr>
+            <tr><td>З</td><td>Ꝫ</td></tr>
+            <tr><td>И</td><td>𐐥</td></tr>
+            <tr><td>К</td><td>Κ</td></tr>
+            <tr><td>М</td><td>Μ</td></tr>
+            <tr><td>Н</td><td>Η</td></tr>
+            <tr><td>О</td><td>Ο</td></tr>
+            <tr><td>П</td><td>Π</td></tr>
+            <tr><td>Р</td><td>Ρ</td></tr>
+            <tr><td>С</td><td>Ꮯ</td></tr>
+            <tr><td>Т</td><td>Τ</td></tr>
+            <tr><td>У</td><td>Ꭹ</td></tr>
+            <tr><td>Ф</td><td>Փ</td></tr>
+            <tr><td>Х</td><td>Χ</td></tr>
+            <tr><td>Ч</td><td>Ⴗ</td></tr>
+            <tr><td>Ш</td><td>Ш</td></tr>
+            <tr><td>Ь</td><td>Ꮟ</td></tr>
+            <tr><td>Э</td><td>℈</td></tr>
+          </tbody>
+        </table>
       </div>
     </aside>
 
@@ -239,9 +286,11 @@
     const labels = { 'churka.txt':'чурка','daun.txt':'даун','hohol.txt':'хохол','jid.txt':'жид','negr.txt':'негр','niga.txt':'нига','niger.txt':'нигер','pedik.txt':'педик','pidor.txt':'пидор','pidrila.txt':'пидрила'};
     const regSelect = document.getElementById('registerSelect'), fileSelect = document.getElementById('fileSelect'), list = document.getElementById('list'), listTitle = document.getElementById('listTitle');
     function wrapChars(text) { return Array.from(text).map(ch => { const span = document.createElement('span'); span.textContent = ch; if (!/[А-Яа-яЁё\s]/.test(ch)) span.classList.add('non-russian'); return span; }); }
-    function populateRegisterSelect() { regSelect.innerHTML=''; [['ВЕРХНИЙ','upper'],['нижний','lower']].forEach(([t,v])=>regSelect.add(new Option(t,v))); regSelect	value='upper'; }
+    function populateRegisterSelect() { regSelect.innerHTML=''; [['ВЕРХНИЙ','upper'],['нижний','lower']].forEach(([t,v])=>regSelect.add(new Option(t,v))); regSelect.value='upper'; }
     function populateFileSelect(mode) { fileSelect.innerHTML=''; sources[mode].files.forEach(f=>fileSelect.add(new Option(labels[f]||f,f))); fileSelect.selectedIndex=0; }
-    function renderList() { const mode=regSelect.value, file=fileSelect.value; list.innerHTML=''; listTitle.textContent=labels[file]||file; fetch(`${sources[mode].dir}/${file}`).then(r=>r.ok?r.text():Promise.reject(r.statusText)).then(t=>t.split(/\r?\n/).forEach(l=>{ if(l.trim()){ const li=document.createElement('li'); wrapChars(l).forEach(s=>li.appendChild(s)); list.appendChild(li);} })).catch(e=>list.innerHTML=`<li>Ошибка загрузки: ${e}</li>`); }
+    function renderList() { const mode=regSelect.value, file=fileSelect.value; list.innerHTML=''; listTitle.textContent=labels[file]||file; fetch(`${sources[mode].dir}/${file}`).then(r=>r.ok?r.text():Promise.reject(r.statusText)).then(t=>t.split(/\r?\n/).forEach(l=>{ if(l.trim()){ const li=document.createElement('li'); wrapChars(l).forEach(s=>li.appendChild(s)); list.appendChild(li);} }))
+      .catch(e=>list.innerHTML=`<li>Ошибка загрузки: ${e}</li>`);
+    }
     regSelect.addEventListener('change',()=>{ populateFileSelect(regSelect.value); renderList(); });
     fileSelect.addEventListener('change', renderList);
     populateRegisterSelect(); populateFileSelect('upper'); renderList();
