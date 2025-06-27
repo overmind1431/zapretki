@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Просмотр слов по регистру и колонкам</title>
+  <title>Просмотр слов по регистру и файлу</title>
   <style>
     :root {
       --bg-color: #f0f2f5;
@@ -20,112 +20,120 @@
       background: var(--bg-color);
       color: var(--text-color);
       line-height: 1.4;
+      padding: 16px;
     }
     .controls {
-      padding: 16px;
       background: var(--card-bg);
       box-shadow: var(--shadow);
       border-radius: var(--border-radius);
-      max-width: 1200px;
-      margin: 16px auto;
-    }
-    fieldset { border: none; margin-bottom: 12px; }
-    legend { font-size: 1em; margin-bottom: 8px; font-weight: 600; }
-    .register-switch label { margin-right: 24px; cursor: pointer; font-size: 0.95em; }
-    .register-switch input { margin-right: 6px; }
-    .file-list label { display: inline-flex; align-items: center; margin: 4px 12px 4px 0; cursor: pointer; font-size: 0.9em; }
-    .file-list input { margin-right: 6px; }
-    .columns {
+      padding: 16px;
+      max-width: 600px;
+      margin: 0 auto 24px;
       display: flex;
       flex-wrap: wrap;
       gap: 16px;
-      max-width: 1200px;
-      margin: 0 auto 16px;
+      align-items: center;
+      justify-content: space-between;
     }
-    .column {
-      background: var(--card-bg);
-      border-radius: var(--border-radius);
-      box-shadow: var(--shadow);
-      flex: 1 1 280px;
+    .controls div {
       display: flex;
       flex-direction: column;
+    }
+    label { margin-bottom: 8px; font-weight: 600; }
+    select {
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: var(--border-radius);
+      background: #fff;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    .list-container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: var(--card-bg);
+      box-shadow: var(--shadow);
+      border-radius: var(--border-radius);
       overflow: hidden;
     }
-    .hidden { display: none !important; }
-    .column h2 {
-      padding: 12px 16px;
+    .list-container h2 {
       background: var(--primary-color);
-      color: #ffffff;
-      font-size: 1.05em;
-      font-weight: 600;
-    }
-    .column ul {
-      list-style: none;
-      overflow-y: auto;
+      color: #fff;
       padding: 12px 16px;
-      flex: 1;
+      font-size: 1.1em;
+      margin: 0;
     }
-    .column li {
+    .list-container ul {
+      list-style: none;
+      padding: 16px;
+      margin: 0;
+      max-height: 60vh;
+      overflow-y: auto;
+    }
+    .list-container li {
       padding: 4px 0;
       border-bottom: 1px solid #e0e0e0;
       word-break: break-all;
       font-size: 0.95em;
     }
-    .column li:last-child { border-bottom: none; }
+    .list-container li:last-child { border-bottom: none; }
     .non-russian { opacity: var(--non-russian-opacity); }
   </style>
 </head>
 <body>
   <div class="controls">
-    <fieldset class="register-switch">
-      <legend>Регистр</legend>
-      <label><input type="radio" name="caseToggle" value="lower" id="toggleLower"> нижний</label>
-      <label><input type="radio" name="caseToggle" value="upper" id="toggleUpper" checked> ВЕРХНИЙ</label>
-    </fieldset>
-    <fieldset id="filesLower" class="file-list">
-      <legend>Нижний регистр: выбор слова</legend>
-    </fieldset>
-    <fieldset id="filesUpper" class="file-list">
-      <legend>ВЕРХНИЙ регистр: выбор слова</legend>
-    </fieldset>
+    <div>
+      <label for="registerSelect">Регистр</label>
+      <select id="registerSelect">
+        <option value="upper">ВЕРХНИЙ</option>
+        <option value="lower">нижний</option>
+      </select>
+    </div>
+    <div>
+      <label for="fileSelectUpper">Файл (ВЕРХНИЙ)</label>
+      <select id="fileSelectUpper"></select>
+    </div>
+    <div>
+      <label for="fileSelectLower">Файл (нижний)</label>
+      <select id="fileSelectLower"></select>
+    </div>
   </div>
 
-  <div class="columns" id="container"></div>
+  <div class="list-container" id="listContainer">
+    <h2 id="listTitle">Список слов</h2>
+    <ul id="list"></ul>
+  </div>
 
   <script>
     const sources = {
-      lower: { dir: 'lowercase', files: ['churka.txt','daun.txt','hohol.txt','jid.txt','negr.txt','niga.txt','niger.txt','pedik.txt','pidor.txt'] },
-      upper: { dir: 'UPPERCASE', files: ['churka.txt','daun.txt','hohol.txt','jid.txt','negr.txt','niga.txt','niger.txt','pedik.txt','pidor.txt','pidrila.txt'] }
+      upper: { dir: 'UPPERCASE', files: ['churka.txt','daun.txt','hohol.txt','jid.txt','negr.txt','niga.txt','niger.txt','pedik.txt','pidor.txt','pidrila.txt'] },
+      lower: { dir: 'lowercase', files: ['churka.txt','daun.txt','hohol.txt','jid.txt','negr.txt','niga.txt','niger.txt','pedik.txt','pidor.txt'] }
     };
     const labels = {
-      'churka.txt': 'чурка','daun.txt': 'даун','hohol.txt': 'хохол','jid.txt': 'жид',
-      'negr.txt': 'негр','niga.txt': 'нига','niger.txt': 'нигер','pedik.txt': 'педик',
-      'pidor.txt': 'пидор','pidrila.txt': 'пидрила'
+      'churka.txt': 'чурка', 'daun.txt': 'даун', 'hohol.txt': 'хохол', 'jid.txt': 'жид',
+      'negr.txt': 'негр', 'niga.txt': 'нига', 'niger.txt': 'нигер', 'pedik.txt': 'педик',
+      'pidor.txt': 'пидор', 'pidrila.txt': 'пидрила'
     };
-    const container = document.getElementById('container');
-    const fsLower = document.getElementById('filesLower');
-    const fsUpper = document.getElementById('filesUpper');
 
-    function initFileSelectors() {
-      Object.entries(sources).forEach(([mode,{files}]) => {
-        const fieldset = mode === 'lower' ? fsLower : fsUpper;
-        files.forEach((fname,i) => {
-          const id = `${mode}_${fname}`;
-          const rb = document.createElement('input');
-          rb.type = 'radio'; rb.name = mode + '_file'; rb.id = id; rb.dataset.mode = mode; rb.dataset.file = fname;
-          if (i === 0) rb.checked = true;
-          const label = document.createElement('label');
-          label.appendChild(rb);
-          label.appendChild(document.createTextNode(' ' + (labels[fname]||fname)));
-          fieldset.appendChild(label);
+    const regSelect = document.getElementById('registerSelect');
+    const fileSelectUpper = document.getElementById('fileSelectUpper');
+    const fileSelectLower = document.getElementById('fileSelectLower');
+    const list = document.getElementById('list');
+    const listTitle = document.getElementById('listTitle');
+    const listContainer = document.getElementById('listContainer');
 
-          rb.addEventListener('change', () => renderSelection());
-        });
+    function populateFileSelects() {
+      sources.upper.files.forEach(f => {
+        const opt = new Option(labels[f] || f, f);
+        fileSelectUpper.add(opt);
+      });
+      sources.lower.files.forEach(f => {
+        const opt = new Option(labels[f] || f, f);
+        fileSelectLower.add(opt);
       });
     }
 
-    function wrapChars(line) {
-      return Array.from(line).map(ch => {
+    function wrapChars(text) {
+      return Array.from(text).map(ch => {
         const span = document.createElement('span');
         span.textContent = ch;
         if (!/[А-Яа-яЁё\s]/.test(ch)) span.classList.add('non-russian');
@@ -133,45 +141,40 @@
       });
     }
 
-    function createColumn(mode,fname,lines) {
-      const col = document.createElement('div'); col.className='column'; col.dataset.mode=mode; col.dataset.file=fname;
-      const h2 = document.createElement('h2'); h2.textContent = labels[fname]||fname; col.appendChild(h2);
-      const ul = document.createElement('ul');
-      lines.forEach(line=>{ if(!line.trim()) return; const li=document.createElement('li'); wrapChars(line).forEach(s=>li.appendChild(s)); ul.appendChild(li); });
-      col.appendChild(ul); container.appendChild(col);
-    }
-
-    function loadAll() {
-      Object.entries(sources).forEach(([mode,{dir,files}])=>{
-        files.forEach(fname=>{
-          fetch(`${dir}/${fname}`)
-            .then(r=>r.ok?r.text():Promise.reject(r.statusText))
-            .then(txt=> createColumn(mode,fname,txt.split(/\r?\n/)))
-            .catch(e=> createColumn(mode,fname,[`Ошибка: ${e}`]));
+    function renderList() {
+      const mode = regSelect.value;
+      const selFile = mode === 'upper' ? fileSelectUpper.value : fileSelectLower.value;
+      const dir = sources[mode].dir;
+      list.innerHTML = '';
+      listTitle.textContent = labels[selFile] || selFile;
+      fetch(`${dir}/${selFile}`)
+        .then(r => r.ok ? r.text() : Promise.reject(r.statusText))
+        .then(text => {
+          text.split(/\r?\n/).forEach(line => {
+            if (!line.trim()) return;
+            const li = document.createElement('li');
+            wrapChars(line).forEach(span => li.appendChild(span));
+            list.appendChild(li);
+          });
+        })
+        .catch(err => {
+          list.innerHTML = `<li>Ошибка загрузки: ${err}</li>`;
         });
-      });
     }
 
-    function renderSelection() {
-      const mode = document.querySelector('input[name=caseToggle]:checked').value;
-      fsLower.hidden = mode !== 'lower'; fsUpper.hidden = mode !== 'upper';
-      container.innerHTML = '';
-      const sel = document.querySelector(`input[name=${mode}_file]:checked`);
-      if (sel) {
-        const fname = sel.dataset.file;
-        const dir = sources[mode].dir;
-        fetch(`${dir}/${fname}`)
-          .then(r=>r.ok?r.text():Promise.reject(r.statusText))
-          .then(txt=> createColumn(mode,fname,txt.split(/\r?\n/)))
-          .catch(e=> createColumn(mode,fname,[`Ошибка: ${e}`]));
-      }
-    }
+    regSelect.addEventListener('change', () => {
+      fileSelectUpper.parentElement.style.display = regSelect.value === 'upper' ? 'block' : 'none';
+      fileSelectLower.parentElement.style.display = regSelect.value === 'lower' ? 'block' : 'none';
+      renderList();
+    });
+    fileSelectUpper.addEventListener('change', renderList);
+    fileSelectLower.addEventListener('change', renderList);
 
-    // Инициализация
-    initFileSelectors(); loadAll();
-    document.getElementById('toggleLower').addEventListener('change', renderSelection);
-    document.getElementById('toggleUpper').addEventListener('change', renderSelection);
-    window.addEventListener('load', renderSelection);
+    // Init
+    populateFileSelects();
+    // Hide lower select initially
+    fileSelectLower.parentElement.style.display = 'none';
+    renderList();
   </script>
 </body>
 </html>
