@@ -5,259 +5,86 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Просмотр слов и таблица омоглифов</title>
   <style>
-    :root {
-      --bg-color: #f0f2f5;
-      --card-bg: #ffffff;
-      --primary-color: #0061f2;
-      --text-color: #333333;
-      --border-radius: 8px;
-      --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-      --non-russian-opacity: 0.4;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background: var(--bg-color);
-      color: var(--text-color);
-      line-height: 1.4;
-      padding: 16px;
-    }
-    .main {
-      display: flex;
-      gap: 24px;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-    .sidebar {
-      flex: 0 0 300px;
-      background: var(--card-bg);
-      box-shadow: var(--shadow);
-      border-radius: var(--border-radius);
-      padding: 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-    .sidebar .explanation {
-      font-size: 0.85em;
-      color: var(--text-color);
-      text-align: center;
-    }
-    .sidebar .tables {
-      display: flex;
-      justify-content: space-between;
-      gap: 8px;
-    }
-    .sidebar table {
-      border-collapse: collapse;
-      width: 48%;
-      font-size: 0.75em;
-    }
-    .sidebar th, .sidebar td {
-      border: 1px solid #ccc;
-      padding: 4px 6px;
-      text-align: center;
-    }
-    .sidebar th {
-      background: #e6f0ff;
-      font-weight: 600;
-    }
-    .content {
-      flex: 1;
-    }
-    .controls {
-      background: var(--card-bg);
-      box-shadow: var(--shadow);
-      border-radius: var(--border-radius);
-      padding: 16px;
-      margin-bottom: 24px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 16px;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .controls div { display: flex; flex-direction: column; }
-    label { margin-bottom: 8px; font-weight: 600; }
-    select {
-      padding: 8px;
-      border: 1px solid #ccc;
-      border-radius: var(--border-radius);
-      background: #fff;
-      font-family: 'Segoe UI', sans-serif;
-    }
-    .list-container {
-      background: var(--card-bg);
-      box-shadow: var(--shadow);
-      border-radius: var(--border-radius);
-      overflow: hidden;
-    }
-    .list-container h2 {
-      background: var(--primary-color);
-      color: #fff;
-      padding: 12px 16px;
-      font-size: 1.1em;
-      margin: 0;
-    }
-    .list-container ul {
-      list-style: none;
-      padding: 16px;
-      margin: 0;
-      max-height: 60vh;
-      overflow-y: auto;
-    }
-    .list-container li {
-      padding: 4px 0;
-      border-bottom: 1px solid #e0e0e0;
-      word-break: break-all;
-      font-size: 0.95em;
-    }
-    .list-container li:last-child { border-bottom: none; }
-    .non-russian { opacity: var(--non-russian-opacity); }
+    :root { --bg-color: #f0f2f5; --card-bg: #fff; --primary-color: #0061f2; --text-color: #333; --radius: 8px; --shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    * { box-sizing: border-box; margin:0; padding:0; }
+    body { background: var(--bg-color); color: var(--text-color); font-family: sans-serif; padding:20px; }
+    .controls { display:flex; gap:10px; margin-bottom:20px; }
+    select,input[type=text] { padding:5px 10px; border:1px solid #ccc; border-radius: var(--radius); }
+    button { background: var(--primary-color); color:#fff; border:none; padding:5px 10px; border-radius: var(--radius); cursor:pointer; }
+    .card { background:var(--card-bg); padding:10px 15px; border-radius:var(--radius); box-shadow:var(--shadow); margin-bottom:8px; }
+    table { width:100%; border-collapse: collapse; margin-top:20px; }
+    th,td { padding:8px; border:1px solid #ddd; }
   </style>
 </head>
 <body>
-  <div class="main">
-    <aside class="sidebar">
-      <div class="explanation">таблица с нечитаемыми омоглифами, слева обычная буква, справа омоглиф</div>
-      <div class="tables">
-        <table>
-          <thead><tr><th colspan="2">нижний регистр</th></tr></thead>
-          <tbody>
-            <tr><td>б</td><td>б</td></tr>
-            <tr><td>в</td><td>ʙ</td></tr>
-            <tr><td>г</td><td>ᴦ</td></tr>
-            <tr><td>е</td><td>℮</td></tr>
-            <tr><td>з</td><td>ɜ</td></tr>
-            <tr><td>и</td><td>ͷ</td></tr>
-            <tr><td>к</td><td>ĸ</td></tr>
-            <tr><td>л</td><td>ᴫ</td></tr>
-            <tr><td>м</td><td>ᴍ</td></tr>
-            <tr><td>н</td><td>ʜ</td></tr>
-            <tr><td>о</td><td>ο</td></tr>
-            <tr><td>п</td><td>ᴨ</td></tr>
-            <tr><td>р</td><td>ⲣ</td></tr>
-            <tr><td>с</td><td>ϲ</td></tr>
-            <tr><td>т</td><td>ᴛ</td></tr>
-            <tr><td>ф</td><td>ɸ</td></tr>
-            <tr><td>я</td><td>ᴙ</td></tr>
-          </tbody>
-        </table>
-        <table>
-          <thead><tr><th colspan="2">ВЕРХНИЙ регистр</th></tr></thead>
-          <tbody>
-            <tr><td>А</td><td>Α</td></tr>
-            <tr><td>В</td><td>Β</td></tr>
-            <tr><td>Г</td><td>Γ</td></tr>
-            <tr><td>Е</td><td>Ε</td></tr>
-            <tr><td>З</td><td>Ꝫ</td></tr>
-            <tr><td>И</td><td>𐐥</td></tr>
-            <tr><td>К</td><td>Κ</td></tr>
-            <tr><td>М</td><td>Μ</td></tr>
-            <tr><td>Н</td><td>Η</td></tr>
-            <tr><td>О</td><td>Ο</td></tr>
-            <tr><td>П</td><td>Π</td></tr>
-            <tr><td>Р</td><td>Ρ</td></tr>
-            <tr><td>С</td><td>Ꮯ</td></tr>
-            <tr><td>Т</td><td>Τ</td></tr>
-            <tr><td>У</td><td>Ꭹ</td></tr>
-            <tr><td>Ф</td><td>Փ</td></tr>
-            <tr><td>Х</td><td>Χ</td></tr>
-            <tr><td>Ч</td><td>Ⴗ</td></tr>
-            <tr><td>Ш</td><td>Ш</td></tr>
-            <tr><td>Ь</td><td>Ꮟ</td></tr>
-            <tr><td>Э</td><td>℈</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </aside>
-
-    <section class="content">
-      <div class="controls">
-        <div>
-          <label for="registerSelect">Регистр</label>
-          <select id="registerSelect">
-            <option value="upper">ВЕРХНИЙ</option>
-            <option value="lower">нижний</option>
-          </select>
-        </div>
-        <div>
-          <label for="fileSelectUpper">Файл (ВЕРХНИЙ)</label>
-          <select id="fileSelectUpper"></select>
-        </div>
-        <div>
-          <label for="fileSelectLower">Файл (нижний)</label>
-          <select id="fileSelectLower"></select>
-        </div>
-      </div>
-
-      <div class="list-container" id="listContainer">
-        <h2 id="listTitle">Список слов</h2>
-        <ul id="list"></ul>
-      </div>
-    </section>
+  <div class="controls">
+    <label>Регистр:
+      <select id="regSelect"><option value="upper">Верхний</option><option value="lower">Нижний</option></select>
+    </label>
+    <label>Файл:
+      <select id="fileSelect"></select>
+    </label>
+    <input type="text" id="searchInput" placeholder="Поиск слова...">
+    <button id="resetBtn">Сброс</button>
   </div>
 
+  <div id="listContainer"></div>
+  <table id="homoglyphTable">
+    <thead><tr><th>Символ</th><th>Описание</th></tr></thead>
+    <tbody></tbody>
+  </table>
+
   <script>
-    const sources = {
-      upper: { dir: 'UPPERCASE', files: ['churka.txt','daun.txt','hohol.txt','jid.txt','negr.txt','niga.txt','niger.txt','pedik.txt','pidor.txt','pidrila.txt'] },
-      lower: { dir: 'lowercase', files: ['churka.txt','daun.txt','hohol.txt','jid.txt','negr.txt','niga.txt','niger.txt','pedik.txt','pidor.txt'] }
-    };
-    const labels = {
-      'churka.txt': 'чурка', 'daun.txt': 'даун', 'hohol.txt': 'хохол', 'jid.txt': 'жид',
-      'negr.txt': 'негр', 'niga.txt': 'нига', 'niger.txt': 'нигер', 'pedik.txt': 'педик',
-      'pidor.txt': 'пидор', 'pidrila.txt': 'пидрила'
-    };
+    (async () => {
+      const owner = 'overmind1431';
+      const repo = 'zapretki';
+      const paths = { upper: 'UPPERCASE', lower: 'lowercase' };
+      const regSelect = document.getElementById('regSelect');
+      const fileSelect = document.getElementById('fileSelect');
+      const searchInput = document.getElementById('searchInput');
+      const resetBtn = document.getElementById('resetBtn');
+      const listContainer = document.getElementById('listContainer');
+      const homoglyphBody = document.querySelector('#homoglyphTable tbody');
 
-    const regSelect = document.getElementById('registerSelect');
-    const fileSelectUpper = document.getElementById('fileSelectUpper');
-    const fileSelectLower = document.getElementById('fileSelectLower');
-    const list = document.getElementById('list');
-    const listTitle = document.getElementById('listTitle');
+      async function fetchFileList(path) {
+        const res = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`);
+        const json = await res.json();
+        return json
+          .filter(item => item.name.endsWith('.txt'))
+          .map(item => item.name.replace(/\.txt$/i, ''));
+      }
 
-    function populateFileSelects() {
-      sources.upper.files.forEach(f => fileSelectUpper.add(new Option(labels[f]||f, f)));
-      sources.lower.files.forEach(f => fileSelectLower.add(new Option(labels[f]||f, f)));
-    }
+      let fileMap = { upper: [], lower: [] };
+      for (const key of ['upper','lower']) {
+        fileMap[key] = await fetchFileList(paths[key]);
+      }
 
-    function wrapChars(text) {
-      return Array.from(text).map(ch => {
-        const span = document.createElement('span');
-        span.textContent = ch;
-        if (!/[А-Яа-яЁё\s]/.test(ch)) span.classList.add('non-russian');
-        return span;
-      });
-    }
+      function populateFiles() {
+        const list = fileMap[regSelect.value] || [];
+        fileSelect.innerHTML = list.map(name => `<option value="${name}">${name}</option>`).join('');
+      }
 
-    function renderList() {
-      const mode = regSelect.value;
-      const selFile = mode === 'upper' ? fileSelectUpper.value : fileSelectLower.value;
-      const dir = sources[mode].dir;
-      list.innerHTML = '';
-      listTitle.textContent = labels[selFile]||selFile;
-      fetch(`${dir}/${selFile}`)
-        .then(r => r.ok ? r.text() : Promise.reject(r.statusText))
-        .then(text => text.split(/\r?\n/).forEach(line => {
-          if (!line.trim()) return;
-          const li = document.createElement('li'); wrapChars(line).forEach(s=>li.appendChild(s));
-          list.appendChild(li);
-        }))
-        .catch(e => list.innerHTML = `<li>Ошибка загрузки: ${e}</li>`);
-    }
+      async function renderList() {
+        const mode = regSelect.value;
+        const folder = paths[mode];
+        const filename = fileSelect.value;
+        if (!filename) return;
+        const text = await fetch(`https://raw.githubusercontent.com/${owner}/${repo}/main/${folder}/${filename}.txt`).then(r => r.text());
+        const words = text.split(/\r?\n/);
+        const q = searchInput.value.trim().toLowerCase();
+        const filtered = words.filter(w => w.toLowerCase().includes(q));
+        listContainer.innerHTML = filtered.map(w => `<div class="card">${w}</div>`).join('');
+        // TODO: заполнять омоглифы в homoglyphBody
+      }
 
-    regSelect.addEventListener('change', () => {
-      fileSelectUpper.parentElement.style.display = regSelect.value==='upper'?'block':'none';
-      fileSelectLower.parentElement.style.display = regSelect.value==='lower'?'block':'none';
-      renderList();
-    });
-    fileSelectUpper.addEventListener('change', renderList);
-    fileSelectUpper.addEventListener('input', renderList);
-    fileSelectLower.addEventListener('change', renderList);
-    fileSelectLower.addEventListener('input', renderList);
+      function updateView() { populateFiles(); renderList(); }
+      regSelect.addEventListener('change', updateView);
+      fileSelect.addEventListener('change', renderList);
+      searchInput.addEventListener('input', renderList);
+      resetBtn.addEventListener('click', () => { searchInput.value=''; renderList(); });
 
-    populateFileSelects();
-    fileSelectLower.parentElement.style.display = 'none';
-    renderList();
+      updateView();
+    })();
   </script>
 </body>
 </html>
