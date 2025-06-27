@@ -22,10 +22,12 @@
       line-height: 1.4;
       padding: 16px;
     }
-    h1 { font-size: 1.5em; margin-bottom: 8px; }
+    h1 {
+      font-size: 1.5em;
+      margin-bottom: 8px;
+    }
     .notice {
       background: #333;
-      color: var(--text-color);
       padding: 12px;
       border-radius: var(--border-radius);
       margin-bottom: 24px;
@@ -161,7 +163,6 @@
   <h1>Генератор невидимых, скрытых запреток</h1>
   <div class="notice">Как это было сделано? С помощью машинного зрения и синтезатора голоса мы перебрали миллион символов из UTF8, чтобы найти нечитаемые синтезатором речи омоглифы, которые идеально похожи на обычные русские буквы</div>
   <div class="main">
-
     <aside class="sidebar">
       <div class="explanation">таблица с нечитаемыми омоглифами</div>
       <div class="tables">
@@ -215,7 +216,6 @@
         </table>
       </div>
     </aside>
-
     <section class="content">
       <div class="controls">
         <div><label for="registerSelect">Регистр</label><select id="registerSelect"></select></div>
@@ -226,33 +226,89 @@
         <ul id="list"></ul>
       </div>
     </section>
-
     <aside class="speech-panel">
       <label for="speechText">Текст для синтеза</label>
       <textarea id="speechText" placeholder="Введите текст..."></textarea>
       <button id="speakBtn">Прослушать</button>
     </aside>
-
   </div>
   <script>
-    // генерация списков
-    const sources = { upper: { dir: 'UPPERCASE', files: ['churka.txt','daun.txt','hohol.txt','jid.txt','negr.txt','niga.txt','niger.txt','pedik.txt','pidor.txt','pidrila.txt'] }, lower: { dir: 'lowercase', files: ['churka.txt','daun.txt','hohol.txt','jid.txt','negr.txt','niga.txt','niger.txt','pedik.txt','pidor.txt'] } };
-    const labels = { 'churka.txt':'чурка','daun.txt':'даун','hohol.txt':'хохол','jid.txt':'жид','negr.txt':'негр','niga.txt':'нига','niger.txt':'нигер','pedik.txt':'педик','pidor.txt':'пидор','pidrila.txt':'пидрила'};
-    const regSelect = document.getElementById('registerSelect'), fileSelect = document.getElementById('fileSelect'), list = document.getElementById('list'), listTitle = document.getElementById('listTitle');
-    function wrapChars(text) { return Array.from(text).map(ch => { const span = document.createElement('span'); span.textContent = ch; if (!/[А-Яа-яЁё\s]/.test(ch)) span.classList.add('non-russian'); return span; }); }
-    function populateRegisterSelect() { regSelect.innerHTML=''; [['ВЕРХНИЙ','upper'],['нижний','lower']].forEach(([t,v])=>regSelect.add(new Option(t,v))); regSelect.value='upper'; }
-    function populateFileSelect(mode) { fileSelect.innerHTML=''; sources[mode].files.forEach(f=>fileSelect.add(new Option(labels[f]||f,f))); fileSelect.selectedIndex=0; }
-    function renderList() { const mode=regSelect.value, file=fileSelect.value; list.innerHTML=''; listTitle.textContent=labels[file]||file; fetch(`${sources[mode].dir}/${file}`).then(r=>r.ok?r.text():Promise.reject(r.statusText)).then(t=>t.split(/\r?\n/).forEach(l=>{ if(l.trim()){ const li=document.createElement('li'); wrapChars(l).forEach(s=>li.appendChild(s)); list.appendChild(li);} })).catch(e=>list.innerHTML=`<li>Ошибка загрузки: ${e}</li>`); }
-    regSelect.addEventListener('change',()=>{ populateFileSelect(regSelect.value); renderList(); });
-    fileSelect.addEventListener('change', renderList);
-    populateRegisterSelect(); populateFileSelect('upper'); renderList();
-    // синтез речи
-    const speakBtn = document.getElementById('speakBtn'), speechText = document.getElementById('speechText');
+    // Подготовка голосов
+    let voices = [];
+    function loadVoices() { voices = speechSynthesis.getVoices(); }
+    speechSynthesis.onvoiceschanged = loadVoices;
+    loadVoices();
+
+    // Синтез речи с голосом "Максим"
+    const speakBtn = document.getElementById('speakBtn');
+    const speechText = document.getElementById('speechText');
     speakBtn.addEventListener('click', () => {
       const utter = new SpeechSynthesisUtterance(speechText.value);
       utter.lang = 'ru-RU';
+      const voice = voices.find(v => /Maxim|Максим/i.test(v.name));
+      if (voice) utter.voice = voice;
+      utter.rate = 1; utter.pitch = 1;
       speechSynthesis.speak(utter);
     });
+
+    // Загрузка списков слов
+    const sources = {
+      upper: { dir: 'UPPERCASE', files: ['churka.txt','daun.txt','hohol.txt','jid.txt','negr.txt','niga.txt','niger.txt','pedik.txt','pidor.txt','pidrila.txt'] },
+      lower: { dir: 'lowercase', files: ['churka.txt','daun.txt','hohol.txt','jid.txt','negr.txt','niga.txt','niger.txt','pedik.txt','pidor.txt'] }
+    };
+    const labels = {
+      'churka.txt': 'чурка', 'daun.txt': 'даун', 'hohol.txt': 'хохол', 'jid.txt': 'жид',
+      'negr.txt': 'негр', 'niga.txt': 'нига', 'niger.txt': 'нигер', 'pedik.txt': 'педик',
+      'pidor.txt': 'пидор', 'pidrila.txt': 'пидрила'
+    };
+    const regSelect = document.getElementById('registerSelect');
+    const fileSelect = document.getElementById('fileSelect');
+    const list = document.getElementById('list');
+    const listTitle = document.getElementById('listTitle');
+
+    function wrapChars(text) {
+      return Array.from(text).map(ch => {
+        const span = document.createElement('span');
+        span.textContent = ch;
+        if (!/[А-Яа-яЁё\s]/.test(ch)) span.classList.add('non-russian');
+        return span;
+      });
+    }
+
+    function populateRegisterSelect() {
+      regSelect.innerHTML = '';
+      [['ВЕРХНИЙ','upper'], ['нижний','lower']].forEach(([t,v]) => regSelect.add(new Option(t,v)));
+      regSelect.value = 'upper';
+    }
+
+    function populateFileSelect(mode) {
+      fileSelect.innerHTML = '';
+      sources[mode].files.forEach(f => fileSelect.add(new Option(labels[f]||f, f)));
+      fileSelect.selectedIndex = 0;
+    }
+
+    function renderList() {
+      const mode = regSelect.value;
+      const file = fileSelect.value;
+      list.innerHTML = '';
+      listTitle.textContent = labels[file] || file;
+      fetch(`${sources[mode].dir}/${file}`)
+        .then(r => r.ok ? r.text() : Promise.reject(r.statusText))
+        .then(txt => txt.split(/\r?\n/).forEach(line => {
+          if (!line.trim()) return;
+          const li = document.createElement('li');
+          wrapChars(line).forEach(s => li.appendChild(s));
+          list.appendChild(li);
+        }))
+        .catch(e => list.innerHTML = `<li>Ошибка загрузки: ${e}</li>`);
+    }
+
+    regSelect.addEventListener('change', () => { populateFileSelect(regSelect.value); renderList(); });
+    fileSelect.addEventListener('change', renderList);
+
+    populateRegisterSelect();
+    populateFileSelect('upper');
+    renderList();
   </script>
 </body>
 </html>
