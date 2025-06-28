@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Генератор невидимых, скрытых запреток</title>
+  <title>Генератор "невидимых, скрытых" запреток (банвордов) твича.</title>
   <style>
     :root {
       --bg-color: #121212;
@@ -193,11 +193,11 @@
 </head>
 <body>
   <h1>Генератор невидимых, скрытых запреток</h1>
-  <div class="notice">Как это было сделано? С помощью машинного зрения и синтезатора голоса мы перебрали миллион символов из UTF8, чтобы найти нечитаемые синтезатором речи омоглифы, которые идеально похожи на обычные русские буквы</div>
+  <div class="notice">Как это было сделано? С помощью машинного зрения и синтезатора голоса скриптом было прочеканно миллион символов из UTF8, чтобы найти нечитаемые синтезатором речи омоглифы, которые идеально похожи на обычные русские буквы</div>
   <div class="main">
 
     <aside class="sidebar">
-      <div class="explanation">таблица с нечитаемыми омоглифами</div>
+      <div class="explanation">Таблица с нечитаемыми омоглифами (не для всех букв есть идеально похожие)</div>
       <div class="tables">
         <table>
           <thead><tr><th>нормальная буква</th><th>нечитаемый омоглиф</th></tr></thead>
@@ -251,10 +251,10 @@
     </aside>
 
     <section class="content">
-      <div class="generated-title">Готовые сгенерированные банворды</div>
+      <div class="generated-title">Готовые сгенерированные банворды. Белые буквы - обычные. Серые - нечитаемые омоглифы. Выдели любое слово, скопируй и вставь в любой синтезатор речи, чтобы узнать как его будет слышать стример</div>
       <div class="controls">
         <div><label for="registerSelect">Регистр</label><select id="registerSelect"></select></div>
-        <div><label for="fileSelect">Файл</label><select id="fileSelect"></select></div>
+        <div><label for="fileSelect">Банворд</label><select id="fileSelect"></select></div>
       </div>
       <div class="list-container">
         <h2 id="listTitle">Список слов</h2>
@@ -263,7 +263,7 @@
     </section>
 
     <aside class="speech-panel">
-      <label for="speechText">Текст для синтеза</label>
+      <label for="speechText">Синтезатор речи (озвучка текста)</label>
       <textarea id="speechText" placeholder="Введите текст..."></textarea>
       <button id="speakBtn"><span class="icon">▶️</span>Прослушать</button>
       <div class="donation">
